@@ -8,9 +8,34 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$PlaceholderFragment">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+        <Button
+            android:id="@+id/data_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/data_entry"/>
+        <Button
+            android:id="@+id/time_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/time_record"/>
+
+        <Button
+            android:id="@+id/bib_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bib_entry"
+            />
+
+        <Button
+            android:id="@+id/results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/results"
+            />
+    </LinearLayout>
 
 </RelativeLayout>

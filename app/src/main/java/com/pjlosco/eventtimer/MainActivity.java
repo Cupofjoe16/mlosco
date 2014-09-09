@@ -3,6 +3,7 @@ package com.pjlosco.eventtimer;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,10 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
-
+import android.widget.Button;
 
 
 public class MainActivity extends Activity {
+
+    private static final String TAG = "MainActivity";
+
+    private Button mDataEntry;
+    private Button mTimeRecord;
+    private Button mBibEntry;
+    private Button mResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +32,42 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        mDataEntry = (Button) findViewById(R.id.data_entry);
+        mDataEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DataEntry.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        mTimeRecord = (Button) findViewById(R.id.time_record);
+        mTimeRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TimeRecord.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        mBibEntry = (Button) findViewById(R.id.bib_entry);
+        mBibEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BibEntry.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        mResults = (Button) findViewById(R.id.results);
+        mResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Results.class);
+                startActivityForResult(intent, 0);
+            }
+        });
     }
 
 
