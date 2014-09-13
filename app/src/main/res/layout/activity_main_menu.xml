@@ -13,10 +13,10 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
         <Button
-            android:id="@+id/data_entry"
+            android:id="@+id/participant_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/data_entry"/>
+            android:text="@string/participant_entry"/>
         <Button
             android:id="@+id/time_record"
             android:layout_width="match_parent"

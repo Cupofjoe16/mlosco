@@ -17,7 +17,7 @@ public class MainMenuActivity extends Activity {
 
     private static final String TAG = "MainMenuActivity";
 
-    private Button mDataEntry;
+    private Button mParticipantEntry;
     private Button mTimeRecord;
     private Button mBibEntry;
     private Button mResults;
@@ -28,8 +28,8 @@ public class MainMenuActivity extends Activity {
         setContentView(R.layout.activity_main_menu);
 
 
-        mDataEntry = (Button) findViewById(R.id.data_entry);
-        mDataEntry.setOnClickListener(new View.OnClickListener() {
+        mParticipantEntry = (Button) findViewById(R.id.participant_entry);
+        mParticipantEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainMenuActivity.this, ParticipantListActivity.class);

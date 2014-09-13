@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- Main Menu -->
-    <string name="data_entry">Racer Data Entry</string>
+    <string name="participant_entry">Participant Entry</string>
     <string name="time_record">Time Recorder</string>
     <string name="bib_entry">Bib Order Entry</string>
     <string name="results">Results</string>

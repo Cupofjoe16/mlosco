@@ -1,12 +1,13 @@
 EventTimer
 ==========
-Participant Listing:
-- list all entrants in the race.
-- Order by name or bib number
-- Add new button (Navigates to ParticipantEntry)
-- Lookup button
 
-Participant entry:
+# Participant Listing:
+* list all entrants in the race.
+* Order by name or bib number
+* Add new button (Navigates to ParticipantEntry)
+* Lookup button
+
+## Participant entry:
 - Form for entering participant
     - First name
     - Last name
@@ -16,7 +17,7 @@ Participant entry:
 - Save button
 - Cancel button
 
-Timer:
+#Timer:
 - Clock with seconds animated
 - Start button
 - Stop button with warning to reset
@@ -24,11 +25,20 @@ Timer:
 - Remove last time stamp button
 - Manually add time
 
-Bib Ordering:
+#Bib Ordering:
 - Enter bib dialog
 - drag and drop order
 - remove bib
 - warning if bib entered is already in system. allow override
 
-Results:
+#Results:
+- TODO for brian
 
+
+###Future features
+- import xml
+- share results (Email)
+- create account
+- save more than one race at a time
+- sync data
+- chip syncing
