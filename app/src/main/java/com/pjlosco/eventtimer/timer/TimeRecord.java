@@ -1,4 +1,4 @@
-package com.pjlosco.eventtimer;
+package com.pjlosco.eventtimer.timer;
 
 /**
  * Created by patricklosco on 9/9/14.

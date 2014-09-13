@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".bibentry.BibEntryListActivity"
+            android:label="@string/title_activity_bib_entry_list" >
+        </activity>
+        <activity
+            android:name=".bibentry.BibEntryDetailActivity"
+            android:label="@string/title_activity_bib_entry_detail" >
+        </activity>
     </application>
 
 </manifest>
