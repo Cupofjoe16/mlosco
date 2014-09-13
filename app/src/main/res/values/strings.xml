@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- App -->
     <string name="app_name">EventTimer</string>
+
+    <!-- Settings -->
     <string name="action_settings">Settings</string>
+
+    <!-- Main Menu -->
     <string name="data_entry">Racer Data Entry</string>
     <string name="time_record">Time Recorder</string>
     <string name="bib_entry">Bib Order Entry</string>
     <string name="results">Results</string>
+
+    <!--  -->
     <string name="title_activity_bib_entry_list">BibEntryListActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_bib_entry_detail">BibEntryDetailActivity</string>
+    <string name="title_activity_results_list">ResultsListActivity</string>
+    <string name="title_activity_timer">TimerActivity</string>
+    <string name="title_activity_participant_list">ParticipantListActivity</string>
+    <string name="title_activity_bib_order_list">BibOrderListActivity</string>
 
 </resources>

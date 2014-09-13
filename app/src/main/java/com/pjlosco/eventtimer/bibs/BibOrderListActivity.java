@@ -1,4 +1,4 @@
-package com.pjlosco.eventtimer.bibentry;
+package com.pjlosco.eventtimer.bibs;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -13,15 +13,15 @@ import android.os.Build;
 
 import com.pjlosco.eventtimer.R;
 
-public class BibEntryDetailActivity extends Activity {
+public class BibOrderListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bib_entry_detail);
+        setContentView(R.layout.activity_bib_order_list);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new BibEntryDetailFragment())
+                    .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
     }
@@ -30,7 +30,7 @@ public class BibEntryDetailActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.bib_entry_detail, menu);
+        getMenuInflater().inflate(R.menu.bib_order_list, menu);
         return true;
     }
 
@@ -46,5 +46,19 @@ public class BibEntryDetailActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
 
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_bib_order_list, container, false);
+            return rootView;
+        }
+    }
 }

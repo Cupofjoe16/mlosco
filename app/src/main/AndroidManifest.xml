@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".MainMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,12 +17,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".bibentry.BibEntryListActivity"
-            android:label="@string/title_activity_bib_entry_list" >
+            android:name=".results.ResultsListActivity"
+            android:label="@string/title_activity_results_list"
+            android:parentActivityName=".MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pjlosco.eventtimer.MainMenuActivity" />
         </activity>
         <activity
-            android:name=".bibentry.BibEntryDetailActivity"
-            android:label="@string/title_activity_bib_entry_detail" >
+            android:name=".timer.TimerActivity"
+            android:label="@string/title_activity_timer"
+            android:parentActivityName=".MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pjlosco.eventtimer.MainMenuActivity" />
+        </activity>
+        <activity
+            android:name=".participants.ParticipantListActivity"
+            android:label="@string/title_activity_participant_list"
+            android:parentActivityName=".MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pjlosco.eventtimer.MainMenuActivity" />
+        </activity>
+        <activity
+            android:name=".bibs.BibOrderListActivity"
+            android:label="@string/title_activity_bib_order_list"
+            android:parentActivityName=".MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pjlosco.eventtimer.MainMenuActivity" />
         </activity>
     </application>
 
