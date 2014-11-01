@@ -31,10 +31,12 @@ public class EventDBHelper extends SQLiteOpenHelper {
                     BibOrderEntry._ID + " INTEGER PRIMARY KEY, " +
                     BibOrderEntry.COLUMN_BIB + " INTEGER NOT NULL, " +
                     "FOREIGN KEY (" + BibOrderEntry.COLUMN_BIB + ") REFERENCES " +
-                    ParticipantEntry.TABLE_NAME + " (" + ParticipantEntry.COLUMN_BIB + "), " +
-                    "UNIQUE (" + BibOrderEntry._ID + ") ON CONFLICT IGNORE);";
+                    ParticipantEntry.TABLE_NAME + " (" + ParticipantEntry.COLUMN_BIB + ");";
 
-    final String SQL_CREATE_TIMESTAMP_TABLE = ""; // TODO!!!
+    final String SQL_CREATE_TIMESTAMP_TABLE =
+            "CREATE TABLE " + TimestampEntry.TABLE_NAME + " ( " +
+                    TimestampEntry._ID + " INTEGER PRIMARY KEY, " +
+                    TimestampEntry.COLUMN_TIME + " REAL NOT NULL);";
 
     public EventDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -21,7 +21,7 @@ public class TimerActivity extends Activity {
         setContentView(R.layout.activity_timer);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new TimeStampListFragment())
                     .commit();
         }
     }
@@ -49,9 +49,9 @@ public class TimerActivity extends Activity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class TimeStampListFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        public TimeStampListFragment() {
         }
 
         @Override
