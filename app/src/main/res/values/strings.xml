@@ -13,12 +13,20 @@
     <string name="bib_entry">Bib Order Entry</string>
     <string name="results">Results</string>
 
-    <!--  -->
-    <string name="title_activity_bib_entry_list">BibEntryListActivity</string>
-    <string name="title_activity_bib_entry_detail">BibEntryDetailActivity</string>
-    <string name="title_activity_results_list">ResultsListActivity</string>
-    <string name="title_activity_timer">TimerActivity</string>
-    <string name="title_activity_participant_list">ParticipantListActivity</string>
+    <!-- Bib Entry -->
     <string name="title_activity_bib_order_list">BibOrderListActivity</string>
+    <string name="action_jump_to_bib">Jump to Bib</string>
+    <string name="add_new_bib">Add Bib</string>
+    <string name="edit_bib">Edit Bib</string>
+
+    <!-- Results -->
+    <string name="title_activity_results_list">ResultsListActivity</string>
+
+    <!-- Timer -->
+    <string name="title_activity_timer">TimerActivity</string>
+
+    <!-- Participants -->
+    <string name="title_activity_participant_list">ParticipantListActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

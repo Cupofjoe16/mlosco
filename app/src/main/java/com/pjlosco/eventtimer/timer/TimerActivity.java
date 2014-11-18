@@ -1,7 +1,6 @@
 package com.pjlosco.eventtimer.timer;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
 import com.pjlosco.eventtimer.R;
 
@@ -21,7 +19,7 @@ public class TimerActivity extends Activity {
         setContentView(R.layout.activity_timer);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new TimeStampListFragment())
+                    .add(R.id.bibOrderListContainer, new TimeStampListFragment())
                     .commit();
         }
     }

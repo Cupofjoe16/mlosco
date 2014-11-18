@@ -1,7 +1,5 @@
 package com.pjlosco.eventtimer.participants;
 
-import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -10,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
 import com.pjlosco.eventtimer.R;
 
@@ -22,7 +19,7 @@ public class ParticipantListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_participant_list);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.bibOrderListContainer, new PlaceholderFragment())
                     .commit();
         }
     }

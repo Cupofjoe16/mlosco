@@ -20,7 +20,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listView" />
+            android:id="@+id/bibListView" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,8 +30,8 @@
             android:layout_alignParentLeft="false"
             android:layout_alignParentRight="false"
             android:layout_alignParentStart="false"
-            android:layout_alignBottom="@+id/listView"
-            android:layout_alignRight="@+id/listView" />
+            android:layout_alignBottom="@+id/bibListView"
+            android:layout_alignRight="@+id/bibListView" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -1,17 +1,13 @@
 package com.pjlosco.eventtimer.bibs;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
 import com.pjlosco.eventtimer.R;
+import com.pjlosco.eventtimer.SettingsActivity;
 
 public class BibOrderListActivity extends Activity {
 
@@ -20,8 +16,14 @@ public class BibOrderListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bib_order_list);
         if (savedInstanceState == null) {
+            Bundle args = new Bundle();
+            // set args here if needed. maybe location in list?
+
+            BibOrderListFragment bibOrderListFragment = new BibOrderListFragment();
+            bibOrderListFragment.setArguments(args);
+
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.bibOrderListContainer, new BibOrderListFragment())
                     .commit();
         }
     }
@@ -34,31 +36,4 @@ public class BibOrderListActivity extends Activity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_bib_order_list, container, false);
-            return rootView;
-        }
-    }
 }

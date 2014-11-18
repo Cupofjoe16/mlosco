@@ -1,8 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.pjlosco.eventtimer.bibs.BibOrderListActivity" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.pjlosco.eventtimer.bibs.BibOrderListActivity">
+    <item android:id="@+id/action_jump_to_bib"
+        android:title="@string/action_jump_to_bib"
+        android:orderInCategory="100"
+        />
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
 </menu>
