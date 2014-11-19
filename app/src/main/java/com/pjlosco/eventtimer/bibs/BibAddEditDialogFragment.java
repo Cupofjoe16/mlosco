@@ -20,7 +20,7 @@ public class BibAddEditDialogFragment extends DialogFragment {
 
     private int originalBibNumber;
     private int newBibNumber;
-    private int position;
+    private int position =0;
 
     public static BibAddEditDialogFragment newInstance(int bibNumber) {
         Bundle args = new Bundle();
@@ -38,8 +38,8 @@ public class BibAddEditDialogFragment extends DialogFragment {
 
         originalBibNumber = (Integer) getArguments().getSerializable(EXTRA_ADD_BIB);
 
-        EditText bibTextInput = (EditText) v.findViewById(R.id.bibTextInput);
-        bibTextInput.setText(originalBibNumber);
+        final EditText bibTextInput = (EditText) v.findViewById(R.id.bibTextInput);
+        bibTextInput.setText(originalBibNumber+"");
 
         String title;
         if (originalBibNumber != 0) {
@@ -54,6 +54,7 @@ public class BibAddEditDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        newBibNumber = Integer.parseInt(bibTextInput.getText().toString());
                         sendResult(Activity.RESULT_OK);
                     }
                 })
@@ -65,7 +66,10 @@ public class BibAddEditDialogFragment extends DialogFragment {
         if (getTargetFragment() == null) {
             return;
         }
-        Intent intent = new Intent().putExtra(EXTRA_ADD_BIB, originalBibNumber);
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_ADD_BIB, newBibNumber);
+        intent.putExtra(EXTRA_ORIGNAL_BIB, originalBibNumber);
+        intent.putExtra(EXTRA_POSITION, position);
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }

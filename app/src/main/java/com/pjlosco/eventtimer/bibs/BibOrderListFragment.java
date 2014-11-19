@@ -27,8 +27,8 @@ public class BibOrderListFragment extends Fragment {
 
     public Button addNewBibButton;
     public ListView bibListView;
-    public ArrayList<Integer> enteredBibs = new ArrayList<Integer>();
-    private final BibAdapter bibAdapter = new BibAdapter(enteredBibs);
+    public ArrayList<Integer> enteredBibs;
+    private BibAdapter bibAdapter;
 
     private static final String BIB_DIALOG = "bib dialog";
     private static final int ADD_BIB = 0;
@@ -51,6 +51,17 @@ public class BibOrderListFragment extends Fragment {
         if (args != null) {
             // probably should keep location in list, in case rotation occurs, to not be in a different spot
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActivity().setTitle(R.string.title_activity_bib_order_list);
+        enteredBibs = new ArrayList<Integer>();
+        bibAdapter = new BibAdapter(enteredBibs);
+        // creating some mock data
+        enteredBibs.add(13);
+        enteredBibs.add(35);
     }
 
     @Override
@@ -143,9 +154,9 @@ public class BibOrderListFragment extends Fragment {
             int bibNumber = getItem(position);
 
             TextView positionTextView = (TextView) convertView.findViewById(R.id.position_list_item_textView);
-            positionTextView.setText(position);
+            positionTextView.setText(position+"");
             TextView bibNumberTextView = (TextView) convertView.findViewById(R.id.bib_number_list_item_textView);
-            bibNumberTextView.setText(bibNumber);
+            bibNumberTextView.setText(bibNumber+"");
             return convertView;
         }
     }
