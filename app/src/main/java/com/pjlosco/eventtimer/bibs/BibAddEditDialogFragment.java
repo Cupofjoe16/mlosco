@@ -54,8 +54,13 @@ public class BibAddEditDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        newBibNumber = Integer.parseInt(bibTextInput.getText().toString());
-                        sendResult(Activity.RESULT_OK);
+                        try {
+                            newBibNumber = Integer.parseInt(bibTextInput.getText().toString());
+                            sendResult(Activity.RESULT_OK);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            sendResult(Activity.RESULT_CANCELED);
+                        }
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)

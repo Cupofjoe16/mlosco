@@ -59,9 +59,6 @@ public class BibOrderListFragment extends Fragment {
         getActivity().setTitle(R.string.title_activity_bib_order_list);
         enteredBibs = new ArrayList<Integer>();
         bibAdapter = new BibAdapter(enteredBibs);
-        // creating some mock data
-        enteredBibs.add(13);
-        enteredBibs.add(35);
     }
 
     @Override
