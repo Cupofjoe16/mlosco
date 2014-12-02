@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.pjlosco.eventtimer.R;
@@ -21,6 +22,12 @@ public class BibAddEditDialogFragment extends DialogFragment {
     private int originalBibNumber;
     private int newBibNumber;
     private int position =0;
+
+
+    public static BibAddEditDialogFragment newInstance() {
+        BibAddEditDialogFragment dialogFragment = new BibAddEditDialogFragment();
+        return dialogFragment;
+    }
 
     public static BibAddEditDialogFragment newInstance(int bibNumber) {
         Bundle args = new Bundle();
@@ -36,19 +43,17 @@ public class BibAddEditDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_bib_add_edit, null);
 
-        originalBibNumber = (Integer) getArguments().getSerializable(EXTRA_ADD_BIB);
-
-        final EditText bibTextInput = (EditText) v.findViewById(R.id.bibTextInput);
-        bibTextInput.setText(originalBibNumber+"");
-
         String title;
-        if (originalBibNumber != 0) {
-            title = "Add Bib";
-        } else {
+        final EditText bibTextInput = (EditText) v.findViewById(R.id.bibTextInput);
+        try {
+            originalBibNumber = (Integer) getArguments().getSerializable(EXTRA_ADD_BIB);
+            bibTextInput.setText(originalBibNumber + "");
             title = "Edit Bib";
+        } catch (NullPointerException e) {
+            title = "Add Bib";
         }
 
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog alert = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(title)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -65,6 +70,14 @@ public class BibAddEditDialogFragment extends DialogFragment {
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return alert;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BibCatalogue.get(getActivity()).saveBibs();
     }
 
     private void sendResult(int resultCode) {

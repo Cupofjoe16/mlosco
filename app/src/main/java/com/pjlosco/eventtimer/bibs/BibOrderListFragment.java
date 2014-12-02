@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +28,7 @@ public class BibOrderListFragment extends Fragment {
 
     public Button addNewBibButton;
     public ListView bibListView;
-    public ArrayList<Integer> enteredBibs;
+    public ArrayList<BibEntry> enteredBibs;
     private BibAdapter bibAdapter;
 
     private static final String BIB_DIALOG = "bib dialog";
@@ -57,7 +58,7 @@ public class BibOrderListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.title_activity_bib_order_list);
-        enteredBibs = new ArrayList<Integer>();
+        enteredBibs = BibCatalogue.get(getActivity()).getBibs();
         bibAdapter = new BibAdapter(enteredBibs);
     }
 
@@ -74,7 +75,7 @@ public class BibOrderListFragment extends Fragment {
                 TextView currentBibNumberTextView = (TextView) view.findViewById(R.id.bib_number_list_item_textView);
                 int currentBibNumber = Integer.parseInt(currentBibNumberTextView.getText().toString());
                 FragmentManager fragmentManager = getActivity().getFragmentManager();
-                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(0);
+                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(currentBibNumber);
                 dialogFragment.setTargetFragment(BibOrderListFragment.this, EDIT_BIB);
                 dialogFragment.show(fragmentManager, BIB_DIALOG);
                 bibAdapter.notifyDataSetChanged();
@@ -87,7 +88,7 @@ public class BibOrderListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getFragmentManager();
-                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(0);
+                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance();
                 dialogFragment.setTargetFragment(BibOrderListFragment.this, ADD_BIB);
                 dialogFragment.show(fragmentManager, BIB_DIALOG);
                 bibAdapter.notifyDataSetChanged();
@@ -122,24 +123,23 @@ public class BibOrderListFragment extends Fragment {
             return;
         }
         if (requestCode == ADD_BIB) {
-            enteredBibs.add((Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB));
+            enteredBibs.add(new BibEntry((Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB), enteredBibs.size()+1));
         }
         else if (requestCode == EDIT_BIB) {
             int originalBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ORIGNAL_BIB);
             int newBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
             int position = enteredBibs.indexOf(originalBib);
-            enteredBibs.remove(originalBib);
-            enteredBibs.add(position, newBib);
+            enteredBibs.remove(position);
+            enteredBibs.add(position, new BibEntry(newBib, position+1));
         }
         else if (requestCode == JUMP_TO_BIB) {
             // update adapter view with new position
         }
     }
 
+    private class BibAdapter extends ArrayAdapter<BibEntry> {
 
-    private class BibAdapter extends ArrayAdapter<Integer> {
-
-        public BibAdapter(ArrayList<Integer> bibs) {
+        public BibAdapter(ArrayList<BibEntry> bibs) {
             super(getActivity(), 0, bibs);
         }
 
@@ -148,12 +148,12 @@ public class BibOrderListFragment extends Fragment {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_bib, null);
             }
-            int bibNumber = getItem(position);
+            BibEntry bib = getItem(position);
 
             TextView positionTextView = (TextView) convertView.findViewById(R.id.position_list_item_textView);
-            positionTextView.setText(position+"");
+            positionTextView.setText(bib.getFinishedPlacement()+"");
             TextView bibNumberTextView = (TextView) convertView.findViewById(R.id.bib_number_list_item_textView);
-            bibNumberTextView.setText(bibNumber+"");
+            bibNumberTextView.setText(bib.getBibIdNumber()+"");
             return convertView;
         }
     }
