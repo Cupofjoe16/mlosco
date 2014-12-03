@@ -19,19 +19,17 @@ public class BibAddEditDialogFragment extends DialogFragment {
     public static final String EXTRA_ORIGNAL_BIB = "com.pjlosco.eventtimer.originalbib";
     public static final String EXTRA_POSITION = "com.pjlosco.eventtimer.bibposition";
 
-    private int originalBibNumber;
-    private int newBibNumber;
-    private int position =0;
-
+    private BibEntry originalBib;
+    private BibEntry newBib;
 
     public static BibAddEditDialogFragment newInstance() {
         BibAddEditDialogFragment dialogFragment = new BibAddEditDialogFragment();
         return dialogFragment;
     }
 
-    public static BibAddEditDialogFragment newInstance(int bibNumber) {
+    public static BibAddEditDialogFragment newInstance(BibEntry bibEntry) {
         Bundle args = new Bundle();
-        args.putSerializable(EXTRA_ADD_BIB, bibNumber);
+        args.putSerializable(EXTRA_ORIGNAL_BIB, bibEntry);
 
         BibAddEditDialogFragment dialogFragment = new BibAddEditDialogFragment();
         dialogFragment.setArguments(args);
@@ -45,9 +43,11 @@ public class BibAddEditDialogFragment extends DialogFragment {
 
         String title;
         final EditText bibTextInput = (EditText) v.findViewById(R.id.bibTextInput);
+        final EditText placementTextInput = (EditText) v.findViewById(R.id.placementTextInput);
         try {
-            originalBibNumber = (Integer) getArguments().getSerializable(EXTRA_ADD_BIB);
-            bibTextInput.setText(originalBibNumber + "");
+            originalBib = (BibEntry) getArguments().getSerializable(EXTRA_ORIGNAL_BIB);
+            bibTextInput.setText(originalBib.getBibIdNumber() + "");
+            placementTextInput.setText(originalBib.getFinishedPlacement() + "");
             title = "Edit Bib";
         } catch (NullPointerException e) {
             title = "Add Bib";
@@ -60,8 +60,14 @@ public class BibAddEditDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            newBibNumber = Integer.parseInt(bibTextInput.getText().toString());
-                            sendResult(Activity.RESULT_OK);
+                            int bib = getEditedText(bibTextInput.getText().toString());
+                            int place = getEditedText(placementTextInput.getText().toString());
+                            newBib = new BibEntry(bib, place);
+                            if (originalBib == null || originalBib != newBib) {
+                                sendResult(Activity.RESULT_OK);
+                            } else {
+                                sendResult(Activity.RESULT_CANCELED);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                             sendResult(Activity.RESULT_CANCELED);
@@ -72,6 +78,17 @@ public class BibAddEditDialogFragment extends DialogFragment {
                 .create();
         alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return alert;
+    }
+    private int getEditedText(String text) {
+        int value = 0;
+        if (!text.isEmpty()) {
+            try {
+                value = Integer.parseInt(text);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return value;
     }
 
     @Override
@@ -85,9 +102,8 @@ public class BibAddEditDialogFragment extends DialogFragment {
             return;
         }
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_ADD_BIB, newBibNumber);
-        intent.putExtra(EXTRA_ORIGNAL_BIB, originalBibNumber);
-        intent.putExtra(EXTRA_POSITION, position);
+        intent.putExtra(EXTRA_ADD_BIB, newBib);
+        intent.putExtra(EXTRA_ORIGNAL_BIB, originalBib);
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }

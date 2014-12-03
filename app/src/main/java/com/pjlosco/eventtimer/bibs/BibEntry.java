@@ -3,7 +3,9 @@ package com.pjlosco.eventtimer.bibs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BibEntry {
+import java.io.Serializable;
+
+public class BibEntry implements Serializable{
 
     private static final String JSON_ID = "id";
     private static final String JSON_PLACEMENT = "placement";
@@ -44,4 +46,19 @@ public class BibEntry {
         json.put(JSON_PLACEMENT, finishedPlacement);
         return json;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean result = false;
+        if (object == null || object.getClass() != BibEntry.class) {
+            result = false;
+        } else {
+            BibEntry newBib = (BibEntry) object;
+            if (newBib.getBibIdNumber() == this.bibIdNumber && newBib.getFinishedPlacement() == this.finishedPlacement) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
 }

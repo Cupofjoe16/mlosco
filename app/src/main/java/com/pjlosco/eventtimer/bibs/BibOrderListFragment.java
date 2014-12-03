@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pjlosco.eventtimer.R;
 import com.pjlosco.eventtimer.SettingsActivity;
@@ -30,6 +31,8 @@ public class BibOrderListFragment extends Fragment {
     public ListView bibListView;
     public ArrayList<BibEntry> enteredBibs;
     private BibAdapter bibAdapter;
+
+    private BibEntry editedBibEntry;
 
     private static final String BIB_DIALOG = "bib dialog";
     private static final int ADD_BIB = 0;
@@ -72,13 +75,11 @@ public class BibOrderListFragment extends Fragment {
         bibListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView currentBibNumberTextView = (TextView) view.findViewById(R.id.bib_number_list_item_textView);
-                int currentBibNumber = Integer.parseInt(currentBibNumberTextView.getText().toString());
+                editedBibEntry = enteredBibs.get(position);
                 FragmentManager fragmentManager = getActivity().getFragmentManager();
-                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(currentBibNumber);
+                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(editedBibEntry);
                 dialogFragment.setTargetFragment(BibOrderListFragment.this, EDIT_BIB);
                 dialogFragment.show(fragmentManager, BIB_DIALOG);
-                bibAdapter.notifyDataSetChanged();
             }
         });
 
@@ -91,7 +92,6 @@ public class BibOrderListFragment extends Fragment {
                 BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance();
                 dialogFragment.setTargetFragment(BibOrderListFragment.this, ADD_BIB);
                 dialogFragment.show(fragmentManager, BIB_DIALOG);
-                bibAdapter.notifyDataSetChanged();
             }
         });
 
@@ -100,17 +100,15 @@ public class BibOrderListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             startActivity(new Intent(getActivity(),SettingsActivity.class));
             return true;
         }
         else if (id == R.id.action_jump_to_bib) {
+            // TODO fix this up later
             FragmentManager fragmentManager = getActivity().getFragmentManager();
-            BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(0);
+            BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance();
             dialogFragment.setTargetFragment(BibOrderListFragment.this, JUMP_TO_BIB);
             dialogFragment.show(fragmentManager, BIB_DIALOG);
         }
@@ -123,18 +121,35 @@ public class BibOrderListFragment extends Fragment {
             return;
         }
         if (requestCode == ADD_BIB) {
-            enteredBibs.add(new BibEntry((Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB), enteredBibs.size()+1));
+            BibEntry newBib = (BibEntry)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
+            newBib.setFinishedPlacement(enteredBibs.size()+1);
+            enteredBibs.add(newBib);
         }
         else if (requestCode == EDIT_BIB) {
-            int originalBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ORIGNAL_BIB);
-            int newBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
-            int position = enteredBibs.indexOf(originalBib);
-            enteredBibs.remove(position);
-            enteredBibs.add(position, new BibEntry(newBib, position+1));
+            BibEntry originalBib = (BibEntry)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ORIGNAL_BIB);
+            BibEntry newBib = (BibEntry)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
+
+            if (enteredBibs.contains(newBib)) {
+                // TODO - not right. See if arraylist already has the bib in any placement
+                Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
+            }
+
+            enteredBibs.remove(originalBib);
+            if (newBib.getFinishedPlacement() > enteredBibs.size()) {
+                newBib.setFinishedPlacement(enteredBibs.size()+1);
+                enteredBibs.add(newBib);
+            } else {
+                if (originalBib.getFinishedPlacement() != newBib.getFinishedPlacement()) {
+                    // TODO - Update all placements of records from in between old and new bib
+                }
+
+                enteredBibs.add(newBib.getFinishedPlacement() - 1, newBib);
+            }
         }
         else if (requestCode == JUMP_TO_BIB) {
             // update adapter view with new position
         }
+        bibAdapter.notifyDataSetChanged();
     }
 
     private class BibAdapter extends ArrayAdapter<BibEntry> {
