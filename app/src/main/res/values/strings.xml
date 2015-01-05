@@ -29,5 +29,14 @@
     <string name="title_activity_participant_list">ParticipantListActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="duplicate_bib_found">A bib with that number has already been entered</string>
+    <string name="title_activity_participant_pager">ParticipantPagerActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="participants_title">Participants</string>
+    <string name="new_participant">New Participant</string>
+    <string name="delete_participant">Delete Participant</string>
+    <string name="participant_first_name_label">First</string>
+    <string name="participant_first_name_hint">First Name</string>
+    <string name="participant_last_name_label">Last</string>
+    <string name="participant_last_name_hint">Last name</string>
 
 </resources>

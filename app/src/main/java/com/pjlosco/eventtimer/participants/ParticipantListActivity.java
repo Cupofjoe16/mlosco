@@ -1,13 +1,8 @@
 package com.pjlosco.eventtimer.participants;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.pjlosco.eventtimer.R;
 
@@ -18,8 +13,14 @@ public class ParticipantListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_list);
         if (savedInstanceState == null) {
+            Bundle args = new Bundle();
+            // set args here if needed. maybe location in list?
+
+            ParticipantListFragment participantListFragment = new ParticipantListFragment();
+            participantListFragment.setArguments(args);
+
             getFragmentManager().beginTransaction()
-                    .add(R.id.bibOrderListContainer, new PlaceholderFragment())
+                    .add(R.id.participantListContainer, participantListFragment)
                     .commit();
         }
     }
@@ -30,33 +31,5 @@ public class ParticipantListActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.participant_list, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_participant_list, container, false);
-            return rootView;
-        }
     }
 }

@@ -23,7 +23,7 @@ public class BibOrderListActivity extends Activity {
             bibOrderListFragment.setArguments(args);
 
             getFragmentManager().beginTransaction()
-                    .add(R.id.bibOrderListContainer, new BibOrderListFragment())
+                    .add(R.id.bibOrderListContainer, bibOrderListFragment)
                     .commit();
         }
     }

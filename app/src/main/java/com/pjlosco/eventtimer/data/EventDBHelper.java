@@ -18,7 +18,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
                     ParticipantEntry._ID + " INTEGER PRIMARY KEY, " +
                     ParticipantEntry.COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
                     ParticipantEntry.COLUMN_LAST_NAME + " TEXT NOT NULL, " +
-                    ParticipantEntry.COLUMN_SEX + " TEXT NOT NULL, " +
+                    ParticipantEntry.COLUMN_GENDER + " TEXT NOT NULL, " +
                     ParticipantEntry.COLUMN_AGE + " INTEGER NOT NULL, " +
                     ParticipantEntry.COLUMN_BIB + " INTEGER NOT NULL, " +
                     ParticipantEntry.COLUMN_TIME + " INTEGER NOT NULL, " + // TODO check to see if this needs to be a double

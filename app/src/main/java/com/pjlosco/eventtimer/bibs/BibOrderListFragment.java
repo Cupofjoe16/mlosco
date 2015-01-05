@@ -3,7 +3,6 @@ package com.pjlosco.eventtimer.bibs;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,10 +28,9 @@ public class BibOrderListFragment extends Fragment {
 
     public Button addNewBibButton;
     public ListView bibListView;
-    public ArrayList<BibEntry> enteredBibs;
+    public BibCatalogue bibCatalogue;
+    public ArrayList<Integer> orderedBibs;
     private BibAdapter bibAdapter;
-
-    private BibEntry editedBibEntry;
 
     private static final String BIB_DIALOG = "bib dialog";
     private static final int ADD_BIB = 0;
@@ -52,6 +50,9 @@ public class BibOrderListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Bundle args = getArguments();
+        bibCatalogue = BibCatalogue.get(getActivity());
+        orderedBibs = bibCatalogue.getOrderedBibs();
+        bibAdapter = new BibAdapter(orderedBibs);
         if (args != null) {
             // probably should keep location in list, in case rotation occurs, to not be in a different spot
         }
@@ -61,8 +62,6 @@ public class BibOrderListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.title_activity_bib_order_list);
-        enteredBibs = BibCatalogue.get(getActivity()).getBibs();
-        bibAdapter = new BibAdapter(enteredBibs);
     }
 
     @Override
@@ -75,9 +74,9 @@ public class BibOrderListFragment extends Fragment {
         bibListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                editedBibEntry = enteredBibs.get(position);
+                int editedBibNumber = orderedBibs.get(position);
                 FragmentManager fragmentManager = getActivity().getFragmentManager();
-                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(editedBibEntry);
+                BibAddEditDialogFragment dialogFragment = BibAddEditDialogFragment.newInstance(editedBibNumber, position);
                 dialogFragment.setTargetFragment(BibOrderListFragment.this, EDIT_BIB);
                 dialogFragment.show(fragmentManager, BIB_DIALOG);
             }
@@ -121,29 +120,38 @@ public class BibOrderListFragment extends Fragment {
             return;
         }
         if (requestCode == ADD_BIB) {
-            BibEntry newBib = (BibEntry)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
-            newBib.setFinishedPlacement(enteredBibs.size()+1);
-            enteredBibs.add(newBib);
+            int newBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
+            try {
+                bibCatalogue.addOrderedBib(newBib);
+            } catch (Exception e) {
+                Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, e.toString());
+            }
         }
         else if (requestCode == EDIT_BIB) {
-            BibEntry originalBib = (BibEntry)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ORIGNAL_BIB);
-            BibEntry newBib = (BibEntry)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
+            int originalBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ORIGNAL_BIB);
+            int newBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
+            int newPlacement = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_PLACEMENT);
 
-            if (enteredBibs.contains(newBib)) {
-                // TODO - not right. See if arraylist already has the bib in any placement
+            if (orderedBibs.contains(new Integer(newBib))) {
                 Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
-            }
-
-            enteredBibs.remove(originalBib);
-            if (newBib.getFinishedPlacement() > enteredBibs.size()) {
-                newBib.setFinishedPlacement(enteredBibs.size()+1);
-                enteredBibs.add(newBib);
             } else {
-                if (originalBib.getFinishedPlacement() != newBib.getFinishedPlacement()) {
-                    // TODO - Update all placements of records from in between old and new bib
+                bibCatalogue.removeOrderedBib(new Integer(originalBib));
+                if (newPlacement > orderedBibs.size() || newPlacement < 1) {
+                    try {
+                        bibCatalogue.addOrderedBib(newBib);
+                    } catch (Exception e) {
+                        Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.toString());
+                    }
+                } else {
+                    try {
+                        bibCatalogue.addOrderedBib(newBib, newPlacement);
+                    } catch (Exception e) {
+                        Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.toString());
+                    }
                 }
-
-                enteredBibs.add(newBib.getFinishedPlacement() - 1, newBib);
             }
         }
         else if (requestCode == JUMP_TO_BIB) {
@@ -152,9 +160,9 @@ public class BibOrderListFragment extends Fragment {
         bibAdapter.notifyDataSetChanged();
     }
 
-    private class BibAdapter extends ArrayAdapter<BibEntry> {
+    private class BibAdapter extends ArrayAdapter<Integer> {
 
-        public BibAdapter(ArrayList<BibEntry> bibs) {
+        public BibAdapter(ArrayList<Integer> bibs) {
             super(getActivity(), 0, bibs);
         }
 
@@ -163,12 +171,12 @@ public class BibOrderListFragment extends Fragment {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_bib, null);
             }
-            BibEntry bib = getItem(position);
+            int bib = getItem(position);
 
             TextView positionTextView = (TextView) convertView.findViewById(R.id.position_list_item_textView);
-            positionTextView.setText(bib.getFinishedPlacement()+"");
+            positionTextView.setText(orderedBibs.indexOf(new Integer(bib))+"");
             TextView bibNumberTextView = (TextView) convertView.findViewById(R.id.bib_number_list_item_textView);
-            bibNumberTextView.setText(bib.getBibIdNumber()+"");
+            bibNumberTextView.setText(bib+"");
             return convertView;
         }
     }

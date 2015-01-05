@@ -38,7 +38,7 @@ public class EventContract {
 
         public static final String COLUMN_FIRST_NAME = "first_name";
         public static final String COLUMN_LAST_NAME = "last_name";
-        public static final String COLUMN_SEX = "sex";
+        public static final String COLUMN_GENDER = "gender";
         public static final String COLUMN_AGE = "age";
         public static final String COLUMN_BIB = "bib";
         public static final String COLUMN_TIME = "time";

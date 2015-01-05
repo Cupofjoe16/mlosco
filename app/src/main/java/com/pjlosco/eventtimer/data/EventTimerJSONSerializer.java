@@ -2,10 +2,11 @@ package com.pjlosco.eventtimer.data;
 
 import android.content.Context;
 
-import com.pjlosco.eventtimer.bibs.BibEntry;
+import com.pjlosco.eventtimer.participants.Participant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
  */
 public class EventTimerJSONSerializer {
 
+    private static final String JSON_ID = "id";
+
     private Context mContext;
     private String mFilename;
 
@@ -31,8 +34,8 @@ public class EventTimerJSONSerializer {
         mFilename = filename;
     }
 
-    public ArrayList<BibEntry> loadBibs() throws IOException, JSONException {
-        ArrayList<BibEntry> bibEntries = new ArrayList<BibEntry>();
+    public ArrayList<Integer> loadBibs() throws IOException, JSONException {
+        ArrayList<Integer> bibEntries = new ArrayList<Integer>();
         BufferedReader reader = null;
         try {
             InputStream inputStream = mContext.openFileInput(mFilename);
@@ -44,10 +47,10 @@ public class EventTimerJSONSerializer {
             }
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
             for (int index = 0; index < array.length(); index++) {
-                bibEntries.add(new BibEntry(array.getJSONObject(index)));
+                bibEntries.add(Integer.parseInt(array.getJSONObject(index).getString(JSON_ID)));
             }
         } catch (FileNotFoundException e) {
-
+            // do nothing and return the empty list
         } finally {
             if (reader != null) {
                 reader.close();
@@ -56,10 +59,12 @@ public class EventTimerJSONSerializer {
         return bibEntries;
     }
 
-    public void saveBibs(ArrayList<BibEntry> bibs) throws JSONException, IOException {
+    public void saveBibs(ArrayList<Integer> bibs) throws JSONException, IOException {
         JSONArray array = new JSONArray();
-        for (BibEntry bibEntry : bibs) {
-            array.put(bibEntry.toJSON());
+        for (int bibIdNumber : bibs) {
+            JSONObject json = new JSONObject();
+            json.put(JSON_ID, bibIdNumber);
+            array.put(json);
         }
         Writer writer = null;
         try {
@@ -71,5 +76,13 @@ public class EventTimerJSONSerializer {
                 writer.close();
             }
         }
+    }
+
+    public ArrayList<Participant> loadParticipants() throws IOException, JSONException {
+        return null; // TODO
+    }
+
+    public void saveParticipants(ArrayList<Participant> participants) throws IOException, JSONException {
+        // TODO
     }
 }
