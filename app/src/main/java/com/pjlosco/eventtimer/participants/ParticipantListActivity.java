@@ -1,12 +1,12 @@
 package com.pjlosco.eventtimer.participants;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 
 import com.pjlosco.eventtimer.R;
 
-public class ParticipantListActivity extends ActionBarActivity {
+public class ParticipantListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

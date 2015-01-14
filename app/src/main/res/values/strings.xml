@@ -38,5 +38,11 @@
     <string name="participant_first_name_hint">First Name</string>
     <string name="participant_last_name_label">Last</string>
     <string name="participant_last_name_hint">Last name</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="participant_age_label">Age</string>
+    <string name="participant_age_hint">Age</string>
+    <string name="bib_number">Bib:</string>
 
 </resources>

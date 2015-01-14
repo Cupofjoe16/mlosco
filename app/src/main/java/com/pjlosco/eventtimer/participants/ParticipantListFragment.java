@@ -173,9 +173,9 @@ public class ParticipantListFragment extends ListFragment {
 
             TextView bibNumberTextView = (TextView) convertView.findViewById(R.id.participant_list_item_bib_number_textView);
             TextView placementTextView = (TextView) convertView.findViewById(R.id.participant_list_item_finish_placement_textView);
-            if (participant.getBibEntry() != null) {
-                bibNumberTextView.setText(participant.getBibEntry().getBibIdNumber());
-                int placement = participant.getBibEntry().getFinishedPlacement();
+            if (participant.getBibNumber() > 0) {
+                bibNumberTextView.setText(participant.getBibNumber());
+                int placement = participant.getFinishedPlacement();
                 if (placement != 0) {
                     placementTextView.setText("Placed: " + placement);
                 } else {

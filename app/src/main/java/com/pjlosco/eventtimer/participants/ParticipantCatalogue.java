@@ -57,6 +57,9 @@ public class ParticipantCatalogue {
     }
 
     public ArrayList<Participant> getParticipants(){
+        if (participants == null) {
+            participants = new ArrayList<Participant>();
+        }
         return participants;
     }
 

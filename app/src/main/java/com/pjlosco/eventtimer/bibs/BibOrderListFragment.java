@@ -155,7 +155,7 @@ public class BibOrderListFragment extends Fragment {
             }
         }
         else if (requestCode == JUMP_TO_BIB) {
-            // update adapter view with new position
+            // TODO - update adapter view with new position
         }
         bibAdapter.notifyDataSetChanged();
     }

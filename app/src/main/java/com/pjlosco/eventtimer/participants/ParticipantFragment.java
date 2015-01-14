@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,9 @@ public class ParticipantFragment extends Fragment {
     private EditText firstNameField;
     private EditText lastNameField;
     private EditText ageField;
-    private RadioButton genderRadioButton;
+    private RadioGroup genderRadioGroup;
+    private RadioButton genderMaleRadioButton;
+    private RadioButton genderFemaleRadioButton;
     private Button bibNumberButton;
     private TextView finishedPlace;
     private TextView finishedTime;
@@ -115,9 +118,42 @@ public class ParticipantFragment extends Fragment {
             }
         });
 
-        // TODO - add in age & gender, then finished place and time
+        ageField = (EditText) view.findViewById(R.id.participant_age);
+        ageField.setText(participant.getAge());
+        ageField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                participant.setAge(Integer.parseInt(charSequence.toString()));
+            }
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        genderMaleRadioButton = (RadioButton) view.findViewById(R.id.radio_gender_male);
+        genderFemaleRadioButton = (RadioButton) view.findViewById(R.id.radio_gender_female);
+        if (participant.getGender() == 'm') {
+            genderRadioGroup.check(R.id.radio_gender_male);
+        } else {
+            genderRadioGroup.check(R.id.radio_gender_female);
+        }
 
         return view;
+    }
+    public void onRadioGenderButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.radio_gender_male:
+                if (checked)
+                    participant.setGender('m');
+                    break;
+            case R.id.radio_gender_female:
+                if (checked)
+                    participant.setGender('f');
+                    break;
+        }
     }
 
 
