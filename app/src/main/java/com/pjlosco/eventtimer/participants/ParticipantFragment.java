@@ -107,7 +107,7 @@ public class ParticipantFragment extends Fragment {
         });
 
         bibNumberButton = (Button)view.findViewById(R.id.bib_number_button);
-        bibNumberButton.setText(participant.getBibNumber());
+        bibNumberButton.setText(participant.getBibNumber()+"");
         bibNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,43 +119,48 @@ public class ParticipantFragment extends Fragment {
         });
 
         ageField = (EditText) view.findViewById(R.id.participant_age);
-        ageField.setText(participant.getAge());
+        ageField.setText(participant.getAge()+"");
         ageField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                participant.setAge(Integer.parseInt(charSequence.toString()));
+                try{
+                    participant.setAge(Integer.parseInt(charSequence.toString()));
+                } catch (Exception e) {
+                    participant.setAge(0);
+                }
             }
+
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         genderMaleRadioButton = (RadioButton) view.findViewById(R.id.radio_gender_male);
+        genderMaleRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                participant.setGender('m');
+            }
+        });
         genderFemaleRadioButton = (RadioButton) view.findViewById(R.id.radio_gender_female);
+        genderFemaleRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                participant.setGender('f');
+            }
+        });
         if (participant.getGender() == 'm') {
-            genderRadioGroup.check(R.id.radio_gender_male);
-        } else {
-            genderRadioGroup.check(R.id.radio_gender_female);
+            genderMaleRadioButton.setChecked(true);
+        } else if (participant.getGender() == 'f') {
+            genderFemaleRadioButton.setChecked(true);
         }
 
         return view;
     }
-    public void onRadioGenderButtonClicked(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        switch(view.getId()) {
-            case R.id.radio_gender_male:
-                if (checked)
-                    participant.setGender('m');
-                    break;
-            case R.id.radio_gender_female:
-                if (checked)
-                    participant.setGender('f');
-                    break;
-        }
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

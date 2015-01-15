@@ -22,7 +22,7 @@ public class Participant {
     private String lastName;
     private char gender;
     private int age;
-    private int bibNumber;
+    private int bibNumber = 0;
     private String finishTime = "00:00:00";
 
     public Participant() {

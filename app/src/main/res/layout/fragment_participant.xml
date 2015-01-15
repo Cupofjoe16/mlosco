@@ -75,7 +75,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/male"
-            android:onClick="onRadioGenderButtonClicked"
             android:layout_gravity="center_vertical|end"
             android:layout_weight="1"
             android:padding="@dimen/textview_padding"
@@ -85,7 +84,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/female"
-            android:onClick="onRadioGenderButtonClicked"
             android:layout_gravity="center_vertical|end"
             android:layout_weight="1"
             android:padding="@dimen/textview_padding"/>

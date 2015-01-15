@@ -174,7 +174,7 @@ public class ParticipantListFragment extends ListFragment {
             TextView bibNumberTextView = (TextView) convertView.findViewById(R.id.participant_list_item_bib_number_textView);
             TextView placementTextView = (TextView) convertView.findViewById(R.id.participant_list_item_finish_placement_textView);
             if (participant.getBibNumber() > 0) {
-                bibNumberTextView.setText(participant.getBibNumber());
+                bibNumberTextView.setText(participant.getBibNumber()+"");
                 int placement = participant.getFinishedPlacement();
                 if (placement != 0) {
                     placementTextView.setText("Placed: " + placement);
@@ -185,6 +185,8 @@ public class ParticipantListFragment extends ListFragment {
                 bibNumberTextView.setText("?");
                 placementTextView.setText("Not Finished");
             }
+            TextView finishTimeTextView = (TextView) convertView.findViewById(R.id.participant_list_item_finish_time_textView);
+            finishTimeTextView.setText(participant.getFinishTime());
 
             TextView firstNameTextView = (TextView) convertView.findViewById(R.id.participant_list_item_first_name_textView);
             firstNameTextView.setText(participant.getFirstName());
@@ -192,9 +194,9 @@ public class ParticipantListFragment extends ListFragment {
             lastNameTextView.setText(participant.getLastName());
 
             TextView ageTextView = (TextView) convertView.findViewById(R.id.participant_list_item_age_textView);
-            ageTextView.setText(participant.getAge());
+            ageTextView.setText(participant.getAge()+"");
             TextView genderTextView = (TextView) convertView.findViewById(R.id.participant_list_item_gender_textView);
-            genderTextView.setText(participant.getGender());
+            genderTextView.setText(participant.getGender()+"");
 
             return convertView;
         }

@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class EventTimerJSONSerializer {
 
-    private static final String JSON_ID = "id";
+    private static final String JSON_BIB_ID = "bib_id";
 
     private Context mContext;
     private String mFilename;
@@ -47,7 +47,7 @@ public class EventTimerJSONSerializer {
             }
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
             for (int index = 0; index < array.length(); index++) {
-                bibEntries.add(Integer.parseInt(array.getJSONObject(index).getString(JSON_ID)));
+                bibEntries.add(Integer.parseInt(array.getJSONObject(index).getString(JSON_BIB_ID)));
             }
         } catch (FileNotFoundException e) {
             // do nothing and return the empty list
@@ -63,7 +63,7 @@ public class EventTimerJSONSerializer {
         JSONArray array = new JSONArray();
         for (int bibIdNumber : bibs) {
             JSONObject json = new JSONObject();
-            json.put(JSON_ID, bibIdNumber);
+            json.put(JSON_BIB_ID, bibIdNumber);
             array.put(json);
         }
         Writer writer = null;
@@ -79,10 +79,44 @@ public class EventTimerJSONSerializer {
     }
 
     public ArrayList<Participant> loadParticipants() throws IOException, JSONException {
-        return null; // TODO
+        ArrayList<Participant> participants = new ArrayList<Participant>();
+        BufferedReader reader = null;
+        try {
+            InputStream inputStream = mContext.openFileInput(mFilename);
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                jsonString.append(line);
+            }
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
+            for (int index = 0; index < array.length(); index++) {
+                participants.add(new Participant(array.getJSONObject(index)));
+            }
+        } catch (FileNotFoundException e) {
+
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+        return participants;
     }
 
     public void saveParticipants(ArrayList<Participant> participants) throws IOException, JSONException {
-        // TODO
+        JSONArray array = new JSONArray();
+        for (Participant participant : participants) {
+            array.put(participant.toJSON());
+        }
+        Writer writer = null;
+        try {
+            OutputStream outputStream = mContext.openFileOutput(mFilename,Context.MODE_PRIVATE);
+            writer = new OutputStreamWriter(outputStream);
+            writer.write(array.toString());
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 }

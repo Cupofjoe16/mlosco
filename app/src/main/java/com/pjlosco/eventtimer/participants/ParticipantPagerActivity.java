@@ -1,10 +1,8 @@
 package com.pjlosco.eventtimer.participants;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.pjlosco.eventtimer.R;
@@ -25,10 +23,9 @@ public class ParticipantPagerActivity extends FragmentActivity {
 
         participants = ParticipantCatalogue.get(this).getParticipants();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+        viewPager.setAdapter(new FragmentStatePagerAdapter(getFragmentManager()) {
             @Override
-            public Fragment getItem(int position) {
+            public android.app.Fragment getItem(int position) {
                 Participant participant = participants.get(position);
                 return ParticipantFragment.newInstance(participant.getId());
             }
