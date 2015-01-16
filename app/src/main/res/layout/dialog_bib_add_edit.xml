@@ -36,18 +36,19 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/placementLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Place:"
-            android:id="@+id/textView4" />
+            />
 
         <EditText
+            android:id="@+id/placementTextInput"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/placementTextInput"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_gravity="center_horizontal"
             android:autoText="false"

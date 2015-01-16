@@ -18,10 +18,10 @@ public class Participant {
     private static final String JSON_TIME = "time";
 
     private UUID id;
-    private String firstName;
-    private String lastName;
+    private String firstName = "";
+    private String lastName = "";
     private char gender;
-    private int age;
+    private int age = 0;
     private int bibNumber = 0;
     private String finishTime = "00:00:00";
 
@@ -29,27 +29,8 @@ public class Participant {
         this.id = UUID.randomUUID();
     }
 
-    public Participant(String firstName, String lastName, char gender, int age) {
-        this();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.age = age;
-    }
-
-    public void editParticipant(String firstName, String lastName, char gender, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.age = age;
-    }
-
     public void setBibNumber(int bibNumber) {
         this.bibNumber = bibNumber;
-    }
-
-    public void setFinishTime(String finishTime) {
-        this.finishTime = finishTime;
     }
 
     public UUID getId() {
@@ -85,7 +66,9 @@ public class Participant {
     }
 
     public void setAge(int age) {
-        this.age = age;
+        if (1 < age || age < 127) {
+            this.age = age;
+        }
     }
 
     public int getBibNumber() {
@@ -94,7 +77,11 @@ public class Participant {
     }
 
     public int getFinishedPlacement() {
-        return BibCatalogue.getBibCatalogue().getOrderedBibs().indexOf(bibNumber);
+        try {
+            return BibCatalogue.getBibCatalogue().getOrderedBibs().indexOf(bibNumber)+1;
+        } catch (NullPointerException e) {
+            return -1;
+        }
     }
 
     public String getFinishTime() {

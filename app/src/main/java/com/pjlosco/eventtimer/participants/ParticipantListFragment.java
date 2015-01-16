@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.ListFragment;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -19,7 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.pjlosco.eventtimer.DuplicateBibEntryException;
 import com.pjlosco.eventtimer.R;
 
 import java.util.ArrayList;
@@ -44,17 +47,17 @@ public class ParticipantListFragment extends ListFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((ParticipantAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Participant participant = ((ParticipantAdapter) getListAdapter()).getItem(position);
         Intent intent = new Intent(getActivity(), ParticipantPagerActivity.class);
         intent.putExtra(ParticipantFragment.EXTRA_PARTICIPANT_ID, participant.getId());
         startActivity(intent);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((ParticipantAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
@@ -151,11 +154,16 @@ public class ParticipantListFragment extends ListFragment {
     }
 
     private void addParticipant() {
-        Participant participant = new Participant();
-        ParticipantCatalogue.get(getActivity()).addParticipant(participant);
-        Intent i = new Intent(getActivity(), ParticipantPagerActivity.class);
-        i.putExtra(ParticipantFragment.EXTRA_PARTICIPANT_ID, participant.getId());
-        startActivityForResult(i, 0);
+        try {
+            Participant participant = new Participant();
+            ParticipantCatalogue.get(getActivity()).addParticipant(participant);
+            Intent i = new Intent(getActivity(), ParticipantPagerActivity.class);
+            i.putExtra(ParticipantFragment.EXTRA_PARTICIPANT_ID, participant.getId());
+            startActivityForResult(i, 0);
+        } catch (DuplicateBibEntryException e) {
+            Toast.makeText(this.getActivity(), "Something is very wrong for adding a new participant", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, e.toString());
+        }
     }
 
     private class ParticipantAdapter extends ArrayAdapter<Participant> {
@@ -176,17 +184,17 @@ public class ParticipantListFragment extends ListFragment {
             if (participant.getBibNumber() > 0) {
                 bibNumberTextView.setText(participant.getBibNumber()+"");
                 int placement = participant.getFinishedPlacement();
-                if (placement != 0) {
+                if (placement > 0) {
                     placementTextView.setText("Placed: " + placement);
+                    TextView finishTimeTextView = (TextView) convertView.findViewById(R.id.participant_list_item_finish_time_textView);
+                    finishTimeTextView.setText(participant.getFinishTime());
                 } else {
                     placementTextView.setText("Not Finished");
                 }
             } else {
-                bibNumberTextView.setText("?");
-                placementTextView.setText("Not Finished");
+                bibNumberTextView.setText("#?");
+                placementTextView.setText("Not Placed");
             }
-            TextView finishTimeTextView = (TextView) convertView.findViewById(R.id.participant_list_item_finish_time_textView);
-            finishTimeTextView.setText(participant.getFinishTime());
 
             TextView firstNameTextView = (TextView) convertView.findViewById(R.id.participant_list_item_first_name_textView);
             firstNameTextView.setText(participant.getFirstName());
@@ -194,9 +202,9 @@ public class ParticipantListFragment extends ListFragment {
             lastNameTextView.setText(participant.getLastName());
 
             TextView ageTextView = (TextView) convertView.findViewById(R.id.participant_list_item_age_textView);
-            ageTextView.setText(participant.getAge()+"");
+            ageTextView.setText("Age: "+participant.getAge());
             TextView genderTextView = (TextView) convertView.findViewById(R.id.participant_list_item_gender_textView);
-            genderTextView.setText(participant.getGender()+"");
+            genderTextView.setText("Gender: "+(participant.getGender()+"").toUpperCase());
 
             return convertView;
         }

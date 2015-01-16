@@ -65,11 +65,13 @@ public class BibAddEditDialogFragment extends DialogFragment {
                 placementTextInput.setText(originalPlacement + "");
             } catch (NullPointerException e) {
                 placementTextInput.setVisibility(View.INVISIBLE);
+                v.findViewById(R.id.placementLabel).setVisibility(View.INVISIBLE);
             }
             title = "Edit Bib";
         } catch (NullPointerException e) {
             title = "Add Bib";
             placementTextInput.setVisibility(View.INVISIBLE);
+            v.findViewById(R.id.placementLabel).setVisibility(View.INVISIBLE);
         }
 
         AlertDialog alert = new AlertDialog.Builder(getActivity())
@@ -116,7 +118,7 @@ public class BibAddEditDialogFragment extends DialogFragment {
     @Override
     public void onPause() {
         super.onPause();
-        BibCatalogue.get(getActivity()).saveBibs();
+        BibCatalogue.get(getActivity()).saveOrderedBibs();
     }
 
     private void sendResult(int resultCode) {

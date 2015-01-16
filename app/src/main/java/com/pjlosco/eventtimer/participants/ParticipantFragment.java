@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,15 +21,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pjlosco.eventtimer.DuplicateBibEntryException;
 import com.pjlosco.eventtimer.R;
 import com.pjlosco.eventtimer.bibs.BibAddEditDialogFragment;
-import com.pjlosco.eventtimer.bibs.BibCatalogue;
 
 import java.util.UUID;
 
-/**
- * Created by patricklosco on 1/3/15.
- */
 public class ParticipantFragment extends Fragment {
 
     private static final String TAG = ParticipantFragment.class.getName();
@@ -74,18 +70,18 @@ public class ParticipantFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_participant, container, false);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (NavUtils.getParentActivityName(getActivity()) != null) {
-                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-        }
-
         firstNameField = (EditText) view.findViewById(R.id.participant_first_name);
         firstNameField.setText(participant.getFirstName());
         firstNameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                participant.setFirstName(charSequence.toString());
+                try {
+                    String firstnameLowerCase = charSequence.toString().toLowerCase();
+                    String firstnameCorrect = Character.toString(firstnameLowerCase.charAt(0)).toUpperCase() + firstnameLowerCase.substring(1);
+                    participant.setFirstName(firstnameCorrect);
+                } catch (StringIndexOutOfBoundsException e) {
+
+                }
             }
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
@@ -98,7 +94,13 @@ public class ParticipantFragment extends Fragment {
         lastNameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                participant.setLastName(charSequence.toString());
+                try {
+                    String lastnameLowerCase = charSequence.toString().toLowerCase();
+                    String lastnameCorrect = Character.toString(lastnameLowerCase.charAt(0)).toUpperCase()+lastnameLowerCase.substring(1);
+                    participant.setLastName(lastnameCorrect);
+                } catch (StringIndexOutOfBoundsException e) {
+
+                }
             }
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
@@ -107,14 +109,18 @@ public class ParticipantFragment extends Fragment {
         });
 
         bibNumberButton = (Button)view.findViewById(R.id.bib_number_button);
-        bibNumberButton.setText(participant.getBibNumber()+"");
+        bibNumberButton.setText("Bib: " + participant.getBibNumber());
         bibNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
-                BibAddEditDialogFragment dialog = BibAddEditDialogFragment.newInstance(participant.getBibNumber());
+                BibAddEditDialogFragment dialog;
+                if (participant.getBibNumber() > 0) {
+                    dialog = BibAddEditDialogFragment.newInstance(participant.getBibNumber());
+                } else {
+                    dialog = BibAddEditDialogFragment.newInstance();
+                }
                 dialog.setTargetFragment(ParticipantFragment.this, REQUEST_BIB_NUMBER);
-                dialog.show(fragmentManager, DIALOG_BIB);
+                dialog.show(getActivity().getFragmentManager(), DIALOG_BIB);
             }
         });
 
@@ -168,10 +174,9 @@ public class ParticipantFragment extends Fragment {
         if (requestCode == REQUEST_BIB_NUMBER) {
             int bibNumber = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
             try {
-                BibCatalogue.get(getActivity()).addParticipantBib(bibNumber);
-                participant.setBibNumber(bibNumber);
-                bibNumberButton.setText(participant.getBibNumber());
-            } catch (Exception e) {
+                ParticipantCatalogue.get(getActivity()).updateParticipantBibNumber(participant, bibNumber);
+                bibNumberButton.setText(participant.getBibNumber() + "");
+            } catch (DuplicateBibEntryException e) {
                 Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, e.toString());
             }

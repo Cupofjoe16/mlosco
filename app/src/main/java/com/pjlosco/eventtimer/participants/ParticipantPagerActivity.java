@@ -45,11 +45,7 @@ public class ParticipantPagerActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 Participant participant = participants.get(position);
-                try {
-                    setTitle(participant.getFirstName() + participant.getLastName());
-                } catch (NullPointerException e) {
-                    setTitle("Un-named Participant");
-                }
+                setTitleToParticipant(participant);
             }
 
             @Override
@@ -65,5 +61,18 @@ public class ParticipantPagerActivity extends FragmentActivity {
             }
         }
     }
+
+    public void setTitleToParticipant(Participant participant) {
+        String firstname = participant.getFirstName();
+        String lastname = participant.getLastName();
+        if (firstname.isEmpty()) {
+            firstname = "Un-named";
+        }
+        if (lastname.isEmpty()) {
+            lastname = "Participant";
+        }
+        setTitle(firstname + " " + lastname);
+    }
+
 
 }

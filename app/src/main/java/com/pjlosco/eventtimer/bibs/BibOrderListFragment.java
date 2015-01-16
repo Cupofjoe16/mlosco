@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pjlosco.eventtimer.DuplicateBibEntryException;
 import com.pjlosco.eventtimer.R;
 import com.pjlosco.eventtimer.SettingsActivity;
 
@@ -47,21 +48,25 @@ public class BibOrderListFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Bundle args = getArguments();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        getActivity().setTitle(R.string.title_activity_bib_order_list);
         bibCatalogue = BibCatalogue.get(getActivity());
         orderedBibs = bibCatalogue.getOrderedBibs();
         bibAdapter = new BibAdapter(orderedBibs);
-        if (args != null) {
-            // probably should keep location in list, in case rotation occurs, to not be in a different spot
-        }
+        setRetainInstance(true);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.title_activity_bib_order_list);
+    public void onResume() {
+        super.onResume();
+        Bundle args = getArguments();
+        bibAdapter.notifyDataSetChanged();
+
+        if (args != null) {
+            // probably should keep location in list, in case rotation occurs, to not be in a different spot
+        }
     }
 
     @Override
@@ -123,7 +128,7 @@ public class BibOrderListFragment extends Fragment {
             int newBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
             try {
                 bibCatalogue.addOrderedBib(newBib);
-            } catch (Exception e) {
+            } catch (DuplicateBibEntryException e) {
                 Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, e.toString());
             }
@@ -133,26 +138,23 @@ public class BibOrderListFragment extends Fragment {
             int newBib = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_ADD_BIB);
             int newPlacement = (Integer)data.getSerializableExtra(BibAddEditDialogFragment.EXTRA_PLACEMENT);
 
-            if (orderedBibs.contains(new Integer(newBib))) {
-                Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
+            bibCatalogue.removeOrderedBib(new Integer(originalBib));
+            if (newPlacement > orderedBibs.size() || newPlacement < 1) {
+                try {
+                    bibCatalogue.addOrderedBib(newBib);
+                } catch (DuplicateBibEntryException e) {
+                    Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.toString());
+                }
             } else {
-                bibCatalogue.removeOrderedBib(new Integer(originalBib));
-                if (newPlacement > orderedBibs.size() || newPlacement < 1) {
-                    try {
-                        bibCatalogue.addOrderedBib(newBib);
-                    } catch (Exception e) {
-                        Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, e.toString());
-                    }
-                } else {
-                    try {
-                        bibCatalogue.addOrderedBib(newBib, newPlacement);
-                    } catch (Exception e) {
-                        Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, e.toString());
-                    }
+                try {
+                    bibCatalogue.addOrderedBib(newBib, newPlacement);
+                } catch (DuplicateBibEntryException e) {
+                    Toast.makeText(this.getActivity(), R.string.duplicate_bib_found, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.toString());
                 }
             }
+
         }
         else if (requestCode == JUMP_TO_BIB) {
             // TODO - update adapter view with new position
@@ -174,7 +176,7 @@ public class BibOrderListFragment extends Fragment {
             int bib = getItem(position);
 
             TextView positionTextView = (TextView) convertView.findViewById(R.id.position_list_item_textView);
-            positionTextView.setText(orderedBibs.indexOf(new Integer(bib))+"");
+            positionTextView.setText((orderedBibs.indexOf(new Integer(bib))+1)+"");
             TextView bibNumberTextView = (TextView) convertView.findViewById(R.id.bib_number_list_item_textView);
             bibNumberTextView.setText(bib+"");
             return convertView;
