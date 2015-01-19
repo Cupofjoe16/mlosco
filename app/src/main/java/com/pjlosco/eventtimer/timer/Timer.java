@@ -14,8 +14,8 @@ public class Timer {
     private static final String TAG = "Timer";
     private static final String FILENAME_TIMER = "timer.json";
 
-    private ArrayList<Timestamp> finishTimesList;
-    private Timestamp startTime;
+    private static ArrayList<Timestamp> finishTimesList = new ArrayList<Timestamp>();
+    private static Timestamp startTime;
 
     private static Timer timer;
     private Context mAppContext;

@@ -68,11 +68,11 @@ public class TimerListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_timestamp_list, container, false);
 
-        timestampListView = (ListView) rootView.findViewById(R.id.list);
+        timestampListView = (ListView) rootView.findViewById(R.id.timestampListView);
 
         timestampListView.setAdapter(timeAdapter);
 
-        addNewTimeButton = (Button) rootView.findViewById(R.id.addBibNumber);
+        addNewTimeButton = (Button) rootView.findViewById(R.id.punchNewTime);
         addNewTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,14 +125,14 @@ public class TimerListFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_bib, null);
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_timestamp, null);
             }
             Timestamp timestamp = getItem(position);
 
-            TextView positionTextView = (TextView) convertView.findViewById(R.id.position_list_item_textView);
+            TextView positionTextView = (TextView) convertView.findViewById(R.id.timestamp_position_list_item_textView);
             positionTextView.setText((timestamps.indexOf(timestamp)+1)+"");
-            TextView bibNumberTextView = (TextView) convertView.findViewById(R.id.bib_number_list_item_textView);
-            bibNumberTextView.setText(timestamp+"");
+            TextView timestampTextView = (TextView) convertView.findViewById(R.id.timestamp_list_item_textView);
+            timestampTextView.setText(timestamp+"");
             return convertView;
         }
     }

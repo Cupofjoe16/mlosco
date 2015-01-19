@@ -12,15 +12,6 @@ public class TimerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
-        if (savedInstanceState == null) {
-            ClockFragment clockFragment = new ClockFragment();
-            TimerListFragment timerListFragment = new TimerListFragment();
-
-            getFragmentManager().beginTransaction()
-                    .add(R.id.timerContainer, clockFragment)
-                    .add(R.id.timerContainer, timerListFragment)
-                    .commit();
-        }
     }
 
 
