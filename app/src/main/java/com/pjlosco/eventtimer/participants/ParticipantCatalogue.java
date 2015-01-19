@@ -83,6 +83,15 @@ public class ParticipantCatalogue {
         }
         return null;
     }
+    public Participant getParticipant(int bibNumber) {
+        for (Participant participant : participants) {
+            if (participant.getBibNumber() == bibNumber) {
+                return participant;
+            }
+        }
+        // TODO - change this?
+        return new Participant();
+    }
 
     public ArrayList<Integer> getParticipantBibs(){
         return participantBibs;

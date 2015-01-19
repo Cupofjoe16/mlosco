@@ -44,5 +44,6 @@
     <string name="participant_age_label">Age</string>
     <string name="participant_age_hint">Age</string>
     <string name="bib_number">Bib:</string>
+    <string name="add_custom_time">Add Custom Time</string>
 
 </resources>

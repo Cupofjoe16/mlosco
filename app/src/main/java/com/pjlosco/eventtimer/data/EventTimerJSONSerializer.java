@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class EventTimerJSONSerializer {
 
     private static final String JSON_BIB_ID = "bib_id";
+    private static final String JSON_TIMESTAMP = "timestamp";
 
     private Context mContext;
     private String mFilename;
@@ -107,6 +109,51 @@ public class EventTimerJSONSerializer {
         JSONArray array = new JSONArray();
         for (Participant participant : participants) {
             array.put(participant.toJSON());
+        }
+        Writer writer = null;
+        try {
+            OutputStream outputStream = mContext.openFileOutput(mFilename,Context.MODE_PRIVATE);
+            writer = new OutputStreamWriter(outputStream);
+            writer.write(array.toString());
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }
+
+
+    public ArrayList<Timestamp> loadTimes() throws IOException, JSONException {
+        ArrayList<Timestamp> timestamps = new ArrayList<Timestamp>();
+        BufferedReader reader = null;
+        try {
+            InputStream inputStream = mContext.openFileInput(mFilename);
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                jsonString.append(line);
+            }
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
+            for (int index = 0; index < array.length(); index++) {
+                timestamps.add(Timestamp.valueOf(array.getJSONObject(index).getString(JSON_TIMESTAMP)));
+            }
+        } catch (FileNotFoundException e) {
+            // do nothing and return the empty list
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+        return timestamps;
+    }
+
+    public void saveTimes(ArrayList<Timestamp> timestamps) throws JSONException, IOException {
+        JSONArray array = new JSONArray();
+        for (Timestamp timestamp : timestamps) {
+            JSONObject json = new JSONObject();
+            json.put(JSON_TIMESTAMP, timestamp);
+            array.put(json);
         }
         Writer writer = null;
         try {

@@ -15,7 +15,6 @@ public class BibCatalogue {
     private static BibCatalogue bibCatalogue;
     private Context mAppContext;
 
-
     private static ArrayList<Integer> orderedBibs;
     private EventTimerJSONSerializer orderedBibsSerializer;
 
