@@ -105,13 +105,10 @@ public class TimerListFragment extends Fragment {
             return;
         }
         if (requestCode == ADD_TIME) {
-            Timestamp newTime = (Timestamp)data.getSerializableExtra(TimerDialogFragment.EXTRA_ADD_TIME);
-            timer.addTimestamp(newTime);
-        } else if (resultCode == SET_START_TIME) {
-            int hours = (Integer) data.getSerializableExtra(TimerDialogFragment.EXTRA_START_HOUR);
-            int minutes = (Integer) data.getSerializableExtra(TimerDialogFragment.EXTRA_START_MINUTES);
-            int seconds = (Integer) data.getSerializableExtra(TimerDialogFragment.EXTRA_START_SECONDS);
-            timer.setStartTime(hours, minutes, seconds);
+            int hours = (Integer) data.getSerializableExtra(TimerDialogFragment.EXTRA_HOUR);
+            int minutes = (Integer) data.getSerializableExtra(TimerDialogFragment.EXTRA_MINUTES);
+            int seconds = (Integer) data.getSerializableExtra(TimerDialogFragment.EXTRA_SECONDS);
+            timer.addTimestamp(hours, minutes, seconds);
         }
         timeAdapter.notifyDataSetChanged();
     }

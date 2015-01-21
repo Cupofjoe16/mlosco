@@ -13,20 +13,42 @@ import android.widget.TextView;
 import com.pjlosco.eventtimer.R;
 
 public class ClockFragment extends Fragment {
+
+    public Timer timer;
+    private boolean activityStopped = false;
+
     private TextView textTimer;
     private TextView textDeciseconds;
-    private Button startButton;
-    private Button pauseButton;
     private long startTime = 0L;
     private Handler myHandler = new Handler();
     long timeInMillies = 0L;
-    long timeSwap = 0L;
-    long finalTime = 0L;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        timer = Timer.get(getActivity());
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        activityStopped = false;
+        if (timer.getStartTime() != null) {
+            startTime = timer.getStartTime().getTime();
+            setTimerText();
+            myHandler.postDelayed(updateTimerMethod, 0);
+        }
+        setTimerText();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        activityStopped = true;
+        myHandler.removeCallbacks(updateTimerMethod);
+        if (startTime != 0) {
+            timer.setStartTime(startTime);
+        }
     }
 
     @Override
@@ -35,20 +57,11 @@ public class ClockFragment extends Fragment {
         textTimer = (TextView) rootView.findViewById(R.id.textTimer);
         textDeciseconds = (TextView) rootView.findViewById(R.id.textDeciseconds);
 
-        startButton = (Button) rootView.findViewById(R.id.btnStart);
+        Button startButton = (Button) rootView.findViewById(R.id.btnStart);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startTime = SystemClock.uptimeMillis();
                 myHandler.postDelayed(updateTimerMethod, 0);
-
-            }
-        });
-
-        pauseButton = (Button) rootView.findViewById(R.id.btnPause);
-        pauseButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                timeSwap += timeInMillies;
-                myHandler.removeCallbacks(updateTimerMethod);
 
             }
         });
@@ -59,25 +72,30 @@ public class ClockFragment extends Fragment {
     private Runnable updateTimerMethod = new Runnable() {
 
         public void run() {
-            timeInMillies = SystemClock.uptimeMillis() - startTime;
-            finalTime = timeSwap + timeInMillies;
-
-            int seconds = (int) (finalTime / 1000);
-            int minutes = seconds / 60;
-            int hours = seconds / (60*60);
-            seconds = seconds % 60;
-            int milliseconds = (int) (finalTime % 1000);
-            int deciseconds = milliseconds/10;
-            textTimer.setText(
-                    String.format("%02d", hours) + ":"
-                            + String.format("%02d", minutes) + ":"
-                            + String.format("%02d", seconds));
-//            myHandler.postAtTime(this, )
-            textDeciseconds.setText(
-                    String.format("%02d", deciseconds));
-            myHandler.postDelayed(this, 0);
+            if (!activityStopped) {
+                setTimerText();
+                myHandler.postDelayed(this, 0);
+            }
         }
 
     };
+
+    private void setTimerText() {
+        if (startTime != 0) {
+            timeInMillies = SystemClock.uptimeMillis() - startTime;
+        }
+        int seconds = (int) (timeInMillies / 1000);
+        int minutes = seconds / 60;
+        int hours = seconds / (60 * 60);
+        seconds = seconds % 60;
+        int milliseconds = (int) (timeInMillies % 1000);
+        int deciseconds = milliseconds / 10;
+        textTimer.setText(
+                String.format("%02d", hours) + ":"
+                        + String.format("%02d", minutes) + ":"
+                        + String.format("%02d", seconds));
+        textDeciseconds.setText(
+                String.format("%02d", deciseconds));
+    }
 
 }

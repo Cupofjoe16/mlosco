@@ -25,7 +25,7 @@
             android:layout_alignParentLeft="false"
             android:layout_alignParentRight="false"
             android:layout_alignParentStart="false"
-            android:layout_alignBottom="@+id/timestampListView"
+            android:layout_alignTop="@+id/timestampListView"
             android:layout_alignRight="@+id/timestampListView" />
     </RelativeLayout>
 

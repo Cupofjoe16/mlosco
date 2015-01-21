@@ -8,6 +8,7 @@ import com.pjlosco.eventtimer.data.EventTimerJSONSerializer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Timer {
 
@@ -28,7 +29,7 @@ public class Timer {
             finishTimesList = timerSerializer.loadTimes();
         } catch (Exception e) {
             finishTimesList = new ArrayList<Timestamp>();
-            Log.e(TAG, "Error loading bibs: ", e);
+            Log.e(TAG, "Error loading times: ", e);
         }
     }
 
@@ -39,21 +40,27 @@ public class Timer {
         return timer;
     }
 
-    public void setStartTime(int hours, int minutes, int seconds) {
-        if (hours == 0 && minutes == 0 && seconds == 0) {
-            // TODO: current time - time passed, parse into start time.
-        }
-        else {
-            this.startTime = new Timestamp(new Date().getTime());
-        }
+    public static Timer get() throws NullPointerException {
+        return timer;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long timeInMillies) {
+        // TODO - debug this. should be current system time
+        this.startTime = new Timestamp(timeInMillies);
     }
 
     public void addTimestamp() {
-        finishTimesList.add(new Timestamp(new Date().getTime()));
+        finishTimesList.add(new Timestamp(System.currentTimeMillis()));
     }
-    public void addTimestamp(Timestamp timestamp) {
-        // TODO - Add timestamp time to clock time to insert a specific
-        finishTimesList.add(new Timestamp(new Date().getTime()));
+    public void addTimestamp(int hours, int minutes, int seconds) {
+        finishTimesList.add(new Timestamp(startTime.getTime()
+                + TimeUnit.HOURS.toMillis(hours)
+                + TimeUnit.MINUTES.toMillis(minutes)
+                + TimeUnit.MINUTES.toMillis(seconds)));
     }
 
     public ArrayList<Timestamp> getTimes() {
