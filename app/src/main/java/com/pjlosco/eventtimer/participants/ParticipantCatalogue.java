@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.pjlosco.eventtimer.DuplicateBibEntryException;
-import com.pjlosco.eventtimer.bibs.BibCatalogue;
 import com.pjlosco.eventtimer.data.EventTimerJSONSerializer;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.UUID;
 
 public class ParticipantCatalogue {
     private static final String TAG = "ParticipantCollection";
-    private static final String FILENAME = "participants.json";
+    private static final String FILENAME_PARTICIPANTS = "participants.json";
     private static final String FILENAME_ENTERED_BIBS = "participant_bibs.json";
 
     private static ParticipantCatalogue participantCatalogue;
@@ -26,7 +25,7 @@ public class ParticipantCatalogue {
 
     private ParticipantCatalogue(Context appContext) {
         mAppContext = appContext;
-        participantSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME);
+        participantSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_PARTICIPANTS);
         participantBibsSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_ENTERED_BIBS);
 
         try {
@@ -89,8 +88,8 @@ public class ParticipantCatalogue {
                 return participant;
             }
         }
-        // TODO - change this?
-        return new Participant();
+        Participant newParticipant = new Participant("Unknown", "Participant");
+        return newParticipant;
     }
 
     public ArrayList<Integer> getParticipantBibs(){

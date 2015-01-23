@@ -31,6 +31,11 @@ public class Participant {
     public Participant() {
         this.id = UUID.randomUUID();
     }
+    public Participant(String firstName, String lastName) {
+        this();
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public void setBibNumber(int bibNumber) {
         this.bibNumber = bibNumber;
@@ -88,12 +93,7 @@ public class Participant {
 
     public String getFinishTime() {
         try {
-            Timer timer = Timer.get();
-            Timestamp finishedTimestamp = (timer.getTimes().get(getFinishedPlacement()-1));
-            long millis = finishedTimestamp.getTime() - timer.getStartTime().getTime();
-            finishTime = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                    TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
-                    TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+            return Timer.get().getFinishedPlacementTime(getFinishedPlacement());
         } catch (NullPointerException e) {
             finishTime = "00:00:00";
         } catch (IndexOutOfBoundsException e) {

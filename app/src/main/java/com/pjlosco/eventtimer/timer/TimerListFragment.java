@@ -3,8 +3,10 @@ package com.pjlosco.eventtimer.timer;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,22 +18,29 @@ import android.widget.TextView;
 
 import com.pjlosco.eventtimer.R;
 import com.pjlosco.eventtimer.SettingsActivity;
+import com.pjlosco.eventtimer.data.EventTimerJSONSerializer;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class TimerListFragment extends Fragment {
-    private static final String TAG = TimerListFragment.class.getName();
 
-    public Button addNewTimeButton;
-    public ListView timestampListView;
+    private static final String TAG = TimerListFragment.class.getName();
+    private static final String FILENAME_TIMESTAMPS = "timestamps.json";
+
     public Timer timer;
     public ArrayList<Timestamp> timestamps;
     private TimeAdapter timeAdapter;
 
+    private Context mAppContext;
+    private EventTimerJSONSerializer timerJSONSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_TIMESTAMPS);
+
     private static final String TIME_DIALOG = "time dialog";
     private static final int ADD_TIME = 0;
     private static final int SET_START_TIME = 1;
+
+    public Button addNewTimeButton;
+    public ListView timestampListView;
 
     public TimerListFragment() {
         setHasOptionsMenu(true);
@@ -46,7 +55,7 @@ public class TimerListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        getActivity().setTitle(R.string.title_activity_timer);
+        mAppContext = getActivity();
         timer = Timer.get(getActivity());
         timestamps = timer.getTimes();
         timeAdapter = new TimeAdapter(timestamps);
@@ -58,9 +67,15 @@ public class TimerListFragment extends Fragment {
         super.onResume();
         Bundle args = getArguments();
         timeAdapter.notifyDataSetChanged();
+    }
 
-        if (args != null) {
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            timerJSONSerializer.saveTimes(timestamps);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving times: ", e);
         }
     }
 
@@ -77,6 +92,7 @@ public class TimerListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 timer.addTimestamp();
+                timeAdapter.notifyDataSetChanged();
             }
 
         });
@@ -129,7 +145,7 @@ public class TimerListFragment extends Fragment {
             TextView positionTextView = (TextView) convertView.findViewById(R.id.timestamp_position_list_item_textView);
             positionTextView.setText((timestamps.indexOf(timestamp)+1)+"");
             TextView timestampTextView = (TextView) convertView.findViewById(R.id.timestamp_list_item_textView);
-            timestampTextView.setText(timestamp+"");
+            timestampTextView.setText(Timer.get().getFinishedPlacementTime(position+1));
             return convertView;
         }
     }

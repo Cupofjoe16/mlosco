@@ -15,8 +15,8 @@ public class Timer {
     private static final String TAG = "Timer";
     private static final String FILENAME_TIMER = "timer.json";
 
-    private static ArrayList<Timestamp> finishTimesList = new ArrayList<Timestamp>();
     private static Timestamp startTime;
+    private static ArrayList<Timestamp> finishTimesList = new ArrayList<Timestamp>();
 
     private static Timer timer;
     private Context mAppContext;
@@ -49,8 +49,7 @@ public class Timer {
     }
 
     public void setStartTime(long timeInMillies) {
-        // TODO - debug this. should be current system time
-        this.startTime = new Timestamp(timeInMillies);
+        this.startTime = new Timestamp(System.currentTimeMillis() - timeInMillies);
     }
 
     public void addTimestamp() {
@@ -66,4 +65,30 @@ public class Timer {
     public ArrayList<Timestamp> getTimes() {
         return finishTimesList;
     }
+
+    public static long timestampDiff(Timestamp startTime, Timestamp endTime) {
+        long timeDifference = endTime.getTime() - startTime.getTime();
+        return timeDifference;
+    }
+
+    public static String formatTime(long timeInMillies) {
+        int seconds = (int) (timeInMillies / 1000);
+        int minutes = seconds / 60;
+        int hours = seconds / (60 * 60);
+        seconds = seconds % 60;
+        return String.format("%02d", hours) + ":"
+             + String.format("%02d", minutes) + ":"
+             + String.format("%02d", seconds);
+    }
+    public static String formatDeciseconds(long timeInMillies) {
+        int milliseconds = (int) (timeInMillies % 1000);
+        int deciseconds = milliseconds / 10;
+        return String.format("%02d", deciseconds);
+    }
+
+    public String getFinishedPlacementTime(int position) throws NullPointerException, IndexOutOfBoundsException {
+        long time = timestampDiff(startTime, finishTimesList.get(position-1));
+        return formatTime(time);
+    }
+
 }

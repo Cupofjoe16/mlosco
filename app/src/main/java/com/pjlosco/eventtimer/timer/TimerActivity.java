@@ -11,6 +11,7 @@ public class TimerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.title_activity_timer);
         setContentView(R.layout.activity_timer);
     }
 

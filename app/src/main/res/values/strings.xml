@@ -2,7 +2,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">EventTimer</string>
+    <string name="app_name">Event Timer</string>
 
     <!-- Settings -->
     <string name="action_settings">Settings</string>
@@ -14,23 +14,22 @@
     <string name="results">Results</string>
 
     <!-- Bib Entry -->
-    <string name="title_activity_bib_order_list">BibOrderListActivity</string>
+    <string name="title_activity_bib_order_list">Bib Order Entry</string>
     <string name="action_jump_to_bib">Jump to Bib</string>
     <string name="add_new_bib">Add Bib</string>
     <string name="edit_bib">Edit Bib</string>
 
     <!-- Results -->
-    <string name="title_activity_results_list">ResultsListActivity</string>
+    <string name="title_activity_results_list">Results</string>
 
     <!-- Timer -->
-    <string name="title_activity_timer">TimerActivity</string>
+    <string name="title_activity_timer">Timer Recorder</string>
+    <string name="add_custom_time">Add Custom Time</string>
 
     <!-- Participants -->
-    <string name="title_activity_participant_list">ParticipantListActivity</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="duplicate_bib_found">A bib with that number has already been entered</string>
     <string name="title_activity_participant_pager">ParticipantPagerActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_participant_list">Participant List</string>
+    <string name="duplicate_bib_found">A bib with that number has already been entered!</string>
     <string name="participants_title">Participants</string>
     <string name="new_participant">New Participant</string>
     <string name="delete_participant">Delete Participant</string>
@@ -44,6 +43,5 @@
     <string name="participant_age_label">Age</string>
     <string name="participant_age_hint">Age</string>
     <string name="bib_number">Bib:</string>
-    <string name="add_custom_time">Add Custom Time</string>
 
 </resources>

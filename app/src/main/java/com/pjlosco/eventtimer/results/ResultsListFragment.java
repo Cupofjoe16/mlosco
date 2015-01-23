@@ -17,6 +17,7 @@ import com.pjlosco.eventtimer.SettingsActivity;
 import com.pjlosco.eventtimer.bibs.BibCatalogue;
 import com.pjlosco.eventtimer.participants.Participant;
 import com.pjlosco.eventtimer.participants.ParticipantCatalogue;
+import com.pjlosco.eventtimer.timer.Timer;
 
 import java.util.ArrayList;
 
@@ -96,7 +97,11 @@ public class ResultsListFragment extends Fragment {
 
             Participant participant = participantCatalogue.getParticipant(bib);
             TextView finishTimeTextView = (TextView) convertView.findViewById(R.id.results_list_item_finish_time_textView);
-            finishTimeTextView.setText(participant.getFinishTime());
+            try {
+                finishTimeTextView.setText(Timer.get().getFinishedPlacementTime(position + 1));
+            } catch (Exception e) {
+                finishTimeTextView.setText(participant.getFinishTime());
+            }
 
             TextView firstNameTextView = (TextView) convertView.findViewById(R.id.results_list_item_first_name_textView);
             firstNameTextView.setText(participant.getFirstName());

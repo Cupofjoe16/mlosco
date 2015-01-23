@@ -71,7 +71,7 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:paddingTop="4dp"
-                android:text="Finish time"
+                android:text="99:99:99"
                 />
             <TextView
                 android:id="@+id/participant_list_item_finish_placement_textView"
