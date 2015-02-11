@@ -9,25 +9,37 @@
     tools:context=".MainMenuActivity">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
         <Button
             android:id="@+id/participant_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/participant_entry"/>
+            android:text="@string/participant_entry"
+            android:textColor="@color/white"
+            android:background="@color/red"
+            android:layout_marginBottom="20dp"
+            />
         <Button
             android:id="@+id/time_record"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/time_record"/>
+            android:text="@string/time_record"
+            android:textColor="@color/white"
+            android:background="@color/red"
+            android:layout_marginBottom="20dp"
+            />
 
         <Button
             android:id="@+id/bib_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/bib_entry"
+            android:textColor="@color/white"
+            android:background="@color/red"
+            android:layout_marginBottom="20dp"
             />
 
         <Button
@@ -35,6 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/results"
+            android:textColor="@color/white"
+            android:background="@color/red"
             />
     </LinearLayout>
 

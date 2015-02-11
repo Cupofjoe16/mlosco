@@ -5,19 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="?android:attr/listPreferredItemHeight"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Position"
-        android:id="@+id/position_list_item_textView"
-        android:layout_weight="1" />
+    <FrameLayout
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/position_list_item_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Position"
+            android:layout_gravity="center_horizontal" />
+    </FrameLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="?android:attr/listPreferredItemHeight"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Bib number"
-        android:id="@+id/bib_number_list_item_textView"
-        android:layout_weight="1" />
+    <FrameLayout
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/bib_number_list_item_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Bib #"
+            android:layout_gravity="center_horizontal" />
+    </FrameLayout>
 </LinearLayout>

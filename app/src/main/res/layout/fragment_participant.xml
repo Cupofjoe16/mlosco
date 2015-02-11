@@ -72,16 +72,15 @@
         android:layout_gravity="fill_horizontal"
         android:orientation="horizontal">
         <RadioButton android:id="@+id/radio_gender_male"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/male"
             android:layout_gravity="center_vertical|end"
             android:layout_weight="1"
             android:padding="@dimen/textview_padding"
-            android:layout_marginEnd="@dimen/textview_padding"
-            android:layout_marginRight="@dimen/textview_padding"/>
+            />
         <RadioButton android:id="@+id/radio_gender_female"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/female"
             android:layout_gravity="center_vertical|end"
@@ -113,8 +112,11 @@
 
     <Button
         android:id="@+id/bib_number_button"
-        android:layout_gravity="fill_horizontal"
+        android:layout_width="200dp"
         android:layout_column="1"
-        android:text="@string/bib_number"/>
+        android:text="@string/bib_number"
+        android:textColor="@color/white"
+        android:background="@color/red"
+        />
 
 </GridLayout>
