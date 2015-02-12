@@ -26,6 +26,7 @@
         </activity>
         <activity
             android:name=".timer.TimerActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_timer"
             android:parentActivityName=".MainMenuActivity" >
             <meta-data

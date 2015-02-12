@@ -33,7 +33,7 @@ public class TimerListFragment extends Fragment {
     private TimeAdapter timeAdapter;
 
     private Context mAppContext;
-    private EventTimerJSONSerializer timerJSONSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_TIMESTAMPS);
+    private EventTimerJSONSerializer timerJSONSerializer;
 
     private static final String TIME_DIALOG = "time dialog";
     private static final int ADD_TIME = 0;
@@ -56,6 +56,7 @@ public class TimerListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mAppContext = getActivity();
+        timerJSONSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_TIMESTAMPS);
         timer = Timer.get(getActivity());
         timestamps = timer.getTimes();
         timeAdapter = new TimeAdapter(timestamps);
