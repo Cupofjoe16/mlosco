@@ -1,25 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.pjlosco.eventtimer.bibs.BibOrderListFragment">
 
     <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list"
-        android:paddingTop="20dp" />
+        />
 
     <Button
+        android:id="@+id/addBibNumber"
+        android:text="Add Bib"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Bib"
-        android:id="@+id/addBibNumber"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignBottom="@+id/list"
-        android:layout_alignRight="@+id/list" />
+        android:layout_gravity="bottom|right" />
 
-</RelativeLayout>
+</FrameLayout>

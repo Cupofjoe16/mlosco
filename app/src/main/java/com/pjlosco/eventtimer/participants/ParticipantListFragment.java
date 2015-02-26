@@ -9,6 +9,7 @@ import android.app.ListFragment;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,6 +105,16 @@ public class ParticipantListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, parent, savedInstanceState);
+
+//        Button addParticipantButton = (Button) view.findViewById(R.id.addParticipantButton);
+//        addParticipantButton.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+//        addParticipantButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addParticipant();
+//            }
+//        });
+
         ListView listView = (ListView) view.findViewById(android.R.id.list);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             registerForContextMenu(listView);

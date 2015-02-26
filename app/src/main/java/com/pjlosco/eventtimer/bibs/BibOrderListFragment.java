@@ -74,7 +74,6 @@ public class BibOrderListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_bib_order_list, container, false);
 
         bibListView = (ListView) rootView.findViewById(R.id.list);
-
         bibListView.setAdapter(bibAdapter);
         bibListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

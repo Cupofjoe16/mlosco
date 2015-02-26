@@ -4,4 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.pjlosco.eventtimer.participants.ParticipantListActivity"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame"
+    android:orientation="vertical"
+    >
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <!--<Button-->
+        <!--android:id="@+id/addParticipantButton"-->
+        <!--android:text="Add Participant"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|right" />-->
+</FrameLayout>
