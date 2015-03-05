@@ -7,32 +7,32 @@ import com.pjlosco.eventtimer.DuplicateBibEntryException;
 import com.pjlosco.eventtimer.data.EventTimerJSONSerializer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 
 public class ParticipantCatalogue {
     private static final String TAG = "ParticipantCollection";
     private static final String FILENAME_PARTICIPANTS = "participants.json";
-    private static final String FILENAME_ENTERED_BIBS = "participant_bibs.json";
 
     private static ParticipantCatalogue participantCatalogue;
     private Context mAppContext;
 
     private static ArrayList<Participant> participants;
-    private static ArrayList<Integer> participantBibs;
+    private static Set<Integer> participantBibs = new HashSet<Integer>();
     private EventTimerJSONSerializer participantSerializer;
-    private EventTimerJSONSerializer participantBibsSerializer;
 
     private ParticipantCatalogue(Context appContext) {
         mAppContext = appContext;
         participantSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_PARTICIPANTS);
-        participantBibsSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_ENTERED_BIBS);
 
         try {
             participants = participantSerializer.loadParticipants();
-            participantBibs = participantBibsSerializer.loadBibs();
+            for(Participant participant : participants) {
+                participantBibs.add(participant.getBibNumber());
+            }
         } catch (Exception e) {
-            participantBibs = new ArrayList<Integer>();
             participants = new ArrayList<Participant>();
             Log.e(TAG, "Error loading participants: ", e);
         }
@@ -42,6 +42,10 @@ public class ParticipantCatalogue {
         if (participantCatalogue == null) {
             participantCatalogue = new ParticipantCatalogue(context.getApplicationContext());
         }
+        return participantCatalogue;
+    }
+
+    public static ParticipantCatalogue getParticipantCatalogue() {
         return participantCatalogue;
     }
 
@@ -57,7 +61,6 @@ public class ParticipantCatalogue {
 
     public boolean saveParticipants() {
         try {
-            saveParticipantBibs();
             participantSerializer.saveParticipants(participants);
             Log.d(TAG, "Participants saved to file");
             return true;
@@ -92,7 +95,7 @@ public class ParticipantCatalogue {
         return newParticipant;
     }
 
-    public ArrayList<Integer> getParticipantBibs(){
+    public Set<Integer> getParticipantBibs(){
         return participantBibs;
     }
 
@@ -112,17 +115,6 @@ public class ParticipantCatalogue {
         return false;
     }
 
-    private boolean saveParticipantBibs() {
-        try {
-            participantBibsSerializer.saveBibs(participantBibs);
-            Log.d(TAG, "Bibs saved to file");
-            return true;
-        } catch (Exception e) {
-            Log.e(TAG, "Error saving bibs: ", e);
-            return false;
-        }
-    }
-
     public static void updateParticipantBibNumber(Participant participant, int newBibNumber) throws DuplicateBibEntryException {
         if (!participantBibs.contains(newBibNumber)) {
             participantBibs.remove(participant.getBibNumber());
@@ -131,5 +123,11 @@ public class ParticipantCatalogue {
         } else {
             throw new DuplicateBibEntryException("Bib already entered");
         }
+    }
+
+    public void clearParticipantCatalogue() {
+        participantBibs = new HashSet<Integer>();
+        participants = new ArrayList<Participant>();
+        saveParticipants();
     }
 }

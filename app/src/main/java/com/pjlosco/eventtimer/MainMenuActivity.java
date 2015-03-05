@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.pjlosco.eventtimer.bibs.BibOrderListActivity;
 import com.pjlosco.eventtimer.participants.ParticipantListActivity;
 import com.pjlosco.eventtimer.results.ResultsListActivity;
+import com.pjlosco.eventtimer.settings.SettingsActivity;
 import com.pjlosco.eventtimer.timer.TimerActivity;
 
 public class MainMenuActivity extends Activity {
@@ -79,6 +80,7 @@ public class MainMenuActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this,SettingsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

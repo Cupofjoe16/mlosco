@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pjlosco.eventtimer.R;
-import com.pjlosco.eventtimer.SettingsActivity;
+import com.pjlosco.eventtimer.settings.SettingsActivity;
 import com.pjlosco.eventtimer.data.EventTimerJSONSerializer;
 
 import java.sql.Timestamp;

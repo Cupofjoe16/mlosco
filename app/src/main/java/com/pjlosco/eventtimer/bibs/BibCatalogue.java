@@ -7,6 +7,7 @@ import com.pjlosco.eventtimer.DuplicateBibEntryException;
 import com.pjlosco.eventtimer.data.EventTimerJSONSerializer;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class BibCatalogue {
     private static final String TAG = "BibCatalogue";
@@ -15,16 +16,17 @@ public class BibCatalogue {
     private static BibCatalogue bibCatalogue;
     private Context mAppContext;
 
-    private static ArrayList<Integer> orderedBibs;
+    private static ArrayList<Integer> orderedBibsList;
+    private static Set<Integer> orderedBibsSet;
     private EventTimerJSONSerializer orderedBibsSerializer;
 
     public BibCatalogue(Context appContext) {
         mAppContext = appContext;
         orderedBibsSerializer = new EventTimerJSONSerializer(mAppContext, FILENAME_ORDERED_BIBS);
         try {
-            orderedBibs = orderedBibsSerializer.loadBibs();
+            orderedBibsList = orderedBibsSerializer.loadBibs();
         } catch (Exception e) {
-            orderedBibs = new ArrayList<Integer>();
+            orderedBibsList = new ArrayList<Integer>();
             Log.e(TAG, "Error loading bibs: ", e);
         }
     }
@@ -41,19 +43,19 @@ public class BibCatalogue {
     }
 
     public ArrayList<Integer> getOrderedBibs(){
-        return orderedBibs;
+        return orderedBibsList;
     }
 
     public void addOrderedBib(int bibNumber) throws DuplicateBibEntryException {
-        if (!orderedBibs.contains(bibNumber)) {
-            orderedBibs.add(bibNumber);
+        if (!orderedBibsList.contains(bibNumber)) {
+            orderedBibsList.add(bibNumber);
         } else {
             throw new DuplicateBibEntryException("Bib already entered");
         }
     }
     public void addOrderedBib(int bibNumber, int position) throws DuplicateBibEntryException {
-        if (!orderedBibs.contains(bibNumber)) {
-            orderedBibs.add(position-1, bibNumber);
+        if (!orderedBibsList.contains(bibNumber)) {
+            orderedBibsList.add(position-1, bibNumber);
         } else {
             throw new DuplicateBibEntryException("Bib already entered");
         }
@@ -61,8 +63,8 @@ public class BibCatalogue {
 
 
     public boolean removeOrderedBib(int bibNumber) {
-        if (orderedBibs.contains(bibNumber)) {
-            orderedBibs.remove(new Integer(bibNumber));
+        if (orderedBibsList.contains(bibNumber)) {
+            orderedBibsList.remove(new Integer(bibNumber));
             return true;
         }
         return false;
@@ -70,12 +72,17 @@ public class BibCatalogue {
 
     public boolean saveOrderedBibs() {
         try {
-            orderedBibsSerializer.saveBibs(orderedBibs);
+            orderedBibsSerializer.saveBibs(orderedBibsList);
             Log.d(TAG, "Bibs saved to file");
             return true;
         } catch (Exception e) {
             Log.e(TAG, "Error saving bibs: ", e);
             return false;
         }
+    }
+
+    public void clearBibCatalogue() {
+        orderedBibsList = new ArrayList<Integer>();
+        saveOrderedBibs();
     }
 }

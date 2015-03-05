@@ -19,6 +19,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Patrick on 12/1/2014.
@@ -36,6 +38,8 @@ public class EventTimerJSONSerializer {
         mFilename = filename;
     }
 
+
+    /*** BIBS ***/
     public ArrayList<Integer> loadBibs() throws IOException, JSONException {
         ArrayList<Integer> bibEntries = new ArrayList<Integer>();
         BufferedReader reader = null;
@@ -80,6 +84,8 @@ public class EventTimerJSONSerializer {
         }
     }
 
+
+    /*** PARTICIPANTS ***/
     public ArrayList<Participant> loadParticipants() throws IOException, JSONException {
         ArrayList<Participant> participants = new ArrayList<Participant>();
         BufferedReader reader = null;
@@ -123,6 +129,7 @@ public class EventTimerJSONSerializer {
     }
 
 
+    /*** TIMESTAMPS ***/
     public ArrayList<Timestamp> loadTimes() throws IOException, JSONException {
         ArrayList<Timestamp> timestamps = new ArrayList<Timestamp>();
         BufferedReader reader = null;

@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.pjlosco.eventtimer.DuplicateBibEntryException;
 import com.pjlosco.eventtimer.R;
-import com.pjlosco.eventtimer.SettingsActivity;
+import com.pjlosco.eventtimer.settings.SettingsActivity;
 
 import java.util.ArrayList;
 

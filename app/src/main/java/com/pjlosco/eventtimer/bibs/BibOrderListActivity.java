@@ -1,13 +1,10 @@
 package com.pjlosco.eventtimer.bibs;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.pjlosco.eventtimer.R;
-import com.pjlosco.eventtimer.SettingsActivity;
 
 public class BibOrderListActivity extends Activity {
 
