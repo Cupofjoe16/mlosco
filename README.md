@@ -17,7 +17,7 @@ EventTimer
 - Save button
 - Cancel button
 
-#Timer:
+# Timer:
 - Clock with seconds animated
 - Start button
 - Stop button with warning to reset
@@ -25,17 +25,17 @@ EventTimer
 - Remove last time stamp button
 - Manually add time
 
-#Bib Ordering:
+# Bib Ordering:
 - Enter bib dialog
 - drag and drop order
 - remove bib
 - warning if bib entered is already in system. allow override
 
-#Results:
+# Results:
 - TODO for brian
 
 
-###Future features
+### Future features
 - import xml
 - share results (Email)
 - create account
