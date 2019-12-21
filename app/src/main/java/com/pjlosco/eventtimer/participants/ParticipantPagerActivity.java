@@ -1,9 +1,9 @@
 package com.pjlosco.eventtimer.participants;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v13.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.legacy.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.pjlosco.eventtimer.R;
 

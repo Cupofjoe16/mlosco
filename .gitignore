@@ -5,3 +5,8 @@
 .DS_Store
 /build
 app/app-release.apk
+*.iml
+keystore.jks
+.idea/
+*/*.iml
+app/build
